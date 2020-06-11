@@ -1,10 +1,12 @@
 <template>
 <div style="padding:10px;">
-    <!-- params -->
+    <!-- params 参数选择界面-->
     <div id="main-left-div">
+        <!-- title -->
         <div style="padding-bottom: 20px;">
             <b v-if="method=='LinearRegression'">线性回归(linear Regression)</b>
             <b v-else-if="method=='LogisticRegression'">逻辑回归(logisticRegression)</b>
+            <b v-else-if="method=='PoissonRegression'">泊松回归(PoissonRegression)</b>
             <b v-else-if="method=='Correlation'">相关性分析(correlation)</b>
             <b v-else-if="method=='DescriptiveStatistics'">描述性统计(Descriptive Statistics)</b>
             <b v-else-if="method=='ReliabilityAnalysis'">可靠性分析(Reliability Analysis)<br>Cronbach's alpha</b>
@@ -14,10 +16,18 @@
             <b v-else-if="method=='ANOVA'">方差分析(ANOVA)</b>
             <b v-else-if="method=='ANCOVA'">协方差分析(ANCOVA)</b>
             <b v-else-if="method=='MANOVA'">多变量方差分析(MANOVA)</b>
+            <b v-else-if="method=='BinomialTest'">二项检验(Binomial Test)</b>
+            <b v-else-if="method=='MultinomialTest'">多项检验(Multinomial Test)</b>
+            <b v-else-if="method=='ContingencyTables'">列联表(Contingency Tables)</b>
+            <b v-else-if="method=='Log-LinearRegression'">对数线性回归(Log-Linear Regression)</b>
+            <b v-else-if="method=='PrincipalComponentAnalysis'">主成分分析(Principal Component Analysis)</b>
+            <b v-else-if="method=='ExploratoryFactorAnalysis'">探索性因素分析(Exploratory Factor Analysis)</b>
+            <b v-else-if="method=='ConfirmatoryFactorAnalysis'">探索性因素分析(Confirmatory Factor Analysis)</b>
+
         </div>
 
         <!-- 线性回归和逻辑回归的界面 -->
-        <div v-if="method=='LinearRegression'||method=='LogisticRegression'">
+        <div v-if="method=='LinearRegression'||method=='LogisticRegression'||method=='PoissonRegression'||method=='Log-LinearRegression'">
             <!-- 左边选择变量的div -->
             <div id="select-div">
                 <div v-for="item in data" :class="{'selected':selected_head==item.head}" @click="selectItem(item)" class="select-var" :key="item.head">
@@ -359,12 +369,111 @@
             </div>
         </div>
 
+        <!-- 二项检验的界面 -->
+        <div v-else-if="method=='BinomialTest'">
+            <!-- 左边选择变量的div -->
+            <div id="select-div">
+                <div :class="{'selected':selected_head==item.head}" @click="selectItem(item)" class="select-var" v-for="item in data" :key="item.head">
+                    {{item.head}}
+                </div>
+            </div>
+            <!-- 中间的按钮div -->
+            <div id="mid-btn">
+                <div @click="selectVariable" class="select-btn-div" style="margin-top:90px;" title="选择为变量">
+                    <img class="btn-img" src="../assets/select.png" alt="select">
+                </div>
+            </div>
+            <!-- 右边已经选择的变量div -->
+            <div id="show-selected-div">
+                <div>
+                    <div>测试值(test value)</div>
+                    <div>
+                        <input id="test_value" type="number" style="width:100%;border:none;padding:4px;border-radius:4px;" value="0.5">
+                    </div>
+                </div>
+                <div style="margin-top:20px;">
+                    <div>变量(Variables)</div>
+                    <div id="Variable-div" style="height:210px;">
+                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="点击移除">
+                            {{item.head}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 列联表的界面 -->
+        <div v-if="method=='ContingencyTables'">
+            <!-- 左边选择变量的div -->
+            <div id="select-div">
+                <div v-for="item in data" :class="{'selected':selected_head==item.head}" @click="selectItem(item)" class="select-var" :key="item.head">
+                    {{item.head}}
+                </div>
+            </div>
+            <!-- 中间的按钮div -->
+            <div id="mid-btn">
+                <div @click="selectRow" class="select-btn-div" title="选择为行变量">
+                    <img class="btn-img" src="../assets/select.png" alt="select">
+                </div>
+                <div @click="selectCol" class="select-btn-div" style="margin-top:85px;" title="选择为列变量">
+                    <img class="btn-img" src="../assets/select.png" alt="select">
+                </div>
+            </div>
+            <!-- 右边已经选择的变量div -->
+            <div id="show-selected-div">
+                <div>
+                    <div>行变量(Row)</div>
+                    <div id="Depent-Var-div">
+                        <div v-if="row_var!=null" @click="deleteRow" class="depent-var" title="点击移除">
+                            {{row_var.head}}
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:50px;">
+                    <div>列变量(Column)</div>
+                    <div id="Depent-Var-div">
+                        <div v-if="col_var!=null" @click="deleteCol" class="depent-var" title="点击移除">
+                            {{col_var.head}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主成分分析的界面 -->
+        <div v-else-if="method=='PrincipalComponentAnalysis'">
+            <!-- 左边选择变量的div -->
+            <div id="select-div">
+                <div :class="{'selected':selected_head==item.head}" @click="selectItem(item)" class="select-var" v-for="item in data" :key="item.head">
+                    {{item.head}}
+                </div>
+            </div>
+            <!-- 中间的按钮div -->
+            <div id="mid-btn">
+                <div @click="selectVariable" class="select-btn-div" title="选择为变量">
+                    <img class="btn-img" src="../assets/select.png" alt="select">
+                </div>
+            </div>
+            <!-- 右边已经选择的变量div -->
+            <div id="show-selected-div">
+                <div>
+                    <div>变量(Variables)</div>
+                    <div id="Variable-div">
+                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="点击移除">
+                            {{item.head}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr style="margin-top:310px;">
         <!-- 确定按钮 -->
         <div style="width:100%;">
-            <button type="button" style="float:right;margin-top:10px;margin-right:25px;" @click="confirm" class="btn btn-warning btn-sm">OK</button>
+            <button type="button" style="float:right;margin-top:0px;margin-right:25px;" @click="confirm" class="btn btn-warning btn-sm">OK</button>
         </div>
     </div>
-    <!-- result -->
+    <!-- result 结果展示界面 -->
     <div id="main-right-div">
         <div>
             <h3><b>Results</b></h3>
@@ -382,6 +491,16 @@
         <!-- 逻辑回归的结果 -->
         <div v-else-if="method=='LogisticRegression'">
             <div><h5><b>Logistic Regression</b></h5></div>
+            <div v-if="result!=null">
+                <div>
+                    <b>call:</b><br>{{getFormula()}}
+                </div>
+                <ShowResult v-if="result!=null&&result!=undefined&&covariates.length>0" :result="result" :method="method" :covariates="covariates"></ShowResult>
+            </div>
+        </div>
+        <!-- 泊松回归的结果 -->
+        <div v-else-if="method=='PoissonRegression'">
+            <div><h5><b>Poisson Regression</b></h5></div>
             <div v-if="result!=null">
                 <div>
                     <b>call:</b><br>{{getFormula()}}
@@ -453,6 +572,37 @@
                 <ShowResult v-if="result!=null&&result!=undefined" :result="result" :method="method" ></ShowResult>
             </div>
         </div>
+        <!-- 二项检验的结果 -->
+        <div v-else-if="method=='BinomialTest'">
+            <div><h5><b>Binomial Test</b></h5></div>
+            <div v-if="result!=null">
+                <ShowResult v-if="result!=null&&result!=undefined" :result="result" :method="method" ></ShowResult>
+            </div>
+        </div>
+        <!-- 对数线性回归的结果 -->
+        <div v-else-if="method=='Log-LinearRegression'">
+            <div><h5><b>Log-Linear Regression</b></h5></div>
+            <div v-if="result!=null">
+                <div>
+                    <b>call:</b><br>{{getFormula()}}
+                </div>
+                <ShowResult v-if="result!=null&&result!=undefined&&covariates.length>0" :result="result" :method="method" :covariates="covariates"></ShowResult>
+            </div>
+        </div>
+        <!-- 列联表的结果 -->
+        <div v-else-if="method=='ContingencyTables'">
+            <div><h5><b>Contingency Tables</b></h5></div>
+            <div v-if="result!=null">
+                <ShowResult v-if="result!=null&&result!=undefined" :row_var="row_var" :col_var="col_var" :result="result" :method="method" ></ShowResult>
+            </div>
+        </div>
+        <!-- 主成分分析的结果 -->
+        <div v-else-if="method=='PrincipalComponentAnalysis'">
+            <div><h5><b>Principal Component Analysis</b></h5></div>
+            <div v-if="result!=null">
+                <ShowResult v-if="result!=null&&result!=undefined" :result="result" :method="method" ></ShowResult>
+            </div>
+        </div>
     </div>
 </div>
 </template>
@@ -474,6 +624,8 @@ export default {
             selected_head: "",
             selected_item: null,
             dependent_variable: null,
+            row_var:null,
+            col_var:null,
             dependents:[],
             covariates: [],
             variables:[],
@@ -492,6 +644,8 @@ export default {
                 this.linearRegression();
             else if (this.method == "LogisticRegression")
                 this.logisticRegression();
+            else if (this.method == "PoissonRegression")
+                this.poissonRegression();
             else if (this.method == "Correlation")
                 this.correlation();
             else if (this.method == "DescriptiveStatistics")
@@ -510,6 +664,14 @@ export default {
                 this.ancova();
             else if (this.method == "MANOVA")
                 this.manova();
+            else if(this.method == "BinomialTest")
+                this.binomial();
+            else if(this.method == "Log-LinearRegression")
+                this.logLinearRegression(); 
+            else if(this.method == "ContingencyTables")
+                this.contingencyTables();
+            else if(this.method == "PrincipalComponentAnalysis")
+                this.principalComponentAnalysis();
         },
         //处理获得分析公式
         getFormula() {
@@ -535,6 +697,220 @@ export default {
                 str += " , family = binomial)";
                 return str;
             }
+            else if (this.method == "PoissonRegression") {
+                var str = "glm(formula = " + this.dependent_variable.head + " ~ ";
+                for (var i = 0; i < this.covariates.length; i++) {
+                    if (i != (this.covariates.length - 1))
+                        str += this.covariates[i].head + "+";
+                    else
+                        str += this.covariates[i].head;
+                }
+                str += " , family = poisson)";
+                return str;
+            }
+            else if (this.method == "Log-LinearRegression") {
+                var str = "formula = ln(" + this.dependent_variable.head + ") ~ ";
+                for (var i = 0; i < this.covariates.length; i++) {
+                    if (i != (this.covariates.length - 1))
+                        str += this.covariates[i].head + "+";
+                    else
+                        str += this.covariates[i].head;
+                }
+                
+                return str;
+            }
+        },
+        //主成分分析
+        principalComponentAnalysis(){
+            console.log("confirm to PrincipalComponentAnalysis");
+            if (this.variables.length > 0) {
+                console.log("PrincipalComponentAnalysis");
+                //检查变量的数据是否都是数字，并且检查数据个数是否一致
+                var len=this.variables[0].data.length;
+                for (var i = 0; i < this.variables.length; i++) {
+                    if (this.variables[i].data.length!=len) {
+                        alert("已选择的变量的数据个数不一致，请检查！");
+                        return;
+                    } 
+                    if (this.check_List_isAllNum(this.variables[i].data) == false) {
+                        alert("变量"+this.variables[i].head+"中数据存在非数字，请检查！");
+                        return;
+                    }
+                }
+
+                //
+                axios
+                    .post("/api/Factor", {
+                        "action":"PrincipalComponentAnalysis",
+                        "dataList":this.variables
+                    })
+                    .then(response => {
+                        console.log(response.data);
+                        if(response.data.statu=="success")
+                            this.result = response.data;
+                        else
+                            alert(response.data.msg);
+                    })
+                    .catch(error => {
+                        alert("服务器出现了点小问题...");
+                        console.log(error);
+                    })
+
+            } else alert("参数选择错误,请检查!");
+        },
+        //列联表
+        contingencyTables() {
+            console.log("confirm to ContingencyTables");
+            if (this.row_var != null && this.col_var != null) {
+                console.log("ContingencyTables");
+                //检查行变量和列变量数据个数是否一致
+                if(this.row_var.data.length!=this.col_var.data.length){
+                    alert("行变量和列变量的数据个数不一致，请检查！");
+                    return;
+                }
+                //处理数据，axiosData用于传到后台
+                var axiosData = new Array();
+                var row={"head":this.row_var.head,"strData":this.row_var.data};
+                var col={"head":this.col_var.head,"strData":this.col_var.data};
+                axiosData.push(row);
+                axiosData.push(col);
+                //
+                axios
+                    .post("/api/Frequencies", {
+                        "action":"ContingencyTables",
+                        "dataList":axiosData
+                    })
+                    .then(response => {
+                        console.log(response.data);
+                        if(response.data.statu=="success")
+                            this.result = response.data;
+                        else
+                            alert(response.data.msg);
+                    })
+                    .catch(error => {
+                        alert("服务器出现了点小问题...");
+                        console.log(error);
+                    })
+
+            } else alert("参数选择错误,请检查!");
+        },
+        //对数线性回归分析
+        logLinearRegression() {
+            console.log("confirm to logLinearRegression");
+            if (this.dependent_variable != null && this.covariates.length > 0) {
+                console.log("logLinearRegression");
+                if(this.covariates.length<2){
+                    alert("协变量个数至少要2个，请检查！");
+                    return;
+                }
+                //检查因变量和协变量的数据是否都是数字，并且检查数据个数是否一致
+                if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
+                    alert("因变量的数据存在非数字，请检查！");
+                    return;
+                }
+                for (var i = 0; i < this.covariates.length; i++) {
+                    if (this.dependent_variable.data.length != this.covariates[i].data.length) {
+                        alert("已选择的项的数据个数不一致，请检查！");
+                        return;
+                    } else {
+                        if (this.check_List_isAllNum(this.covariates[i].data) == false) {
+                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            return;
+                        }
+                    }
+                }
+
+                //处理数据，axiosData用于传到后台
+                var axiosData = new Array();
+                this.dependent_variable.type = "dependent"; //设置类型为因变量
+                axiosData.push(this.dependent_variable); //添加到axiosData
+                for (var i = 0; i < this.covariates.length; i++) {
+                    this.covariates[i].type = "covariate"; //设置类型为协变量
+                    axiosData.push(this.covariates[i]); //添加
+                }
+                //
+                axios
+                    .post("/api/Frequencies", {
+                        "action":"Log-LinearRegression",
+                        "dataList":axiosData
+                    })
+                    .then(response => {
+                        console.log(response.data);
+                        if(response.data.statu=="success")
+                            this.result = response.data;
+                        else
+                            alert(response.data.msg);
+                    })
+                    .catch(error => {
+                        alert("服务器出现了点小问题...");
+                        console.log(error);
+                    })
+
+            } else alert("参数选择错误,请检查!");
+        },
+        //二项检验 binomial
+        binomial() {
+            console.log("confirm to Binomial Test");
+            if (this.variables.length>0) {
+                console.log("Binomial Test");
+                //检查测试值
+                var test_value=$("#test_value").val();
+                if(test_value==""||test_value==undefined||test_value==null){
+                    alert("测试值为空，请检查！");
+                    return;
+                }
+                //处理数据，axiosData用于传到后台
+                var axiosData = new Array();
+                for(var i=0;i<this.variables.length;i++){
+                    var item=this.variables[i];
+                    //
+                    var names=new Array();//存放变量的各项数据名称
+                    var data=new Array();//存放变量的各项数据
+                    names.push("p_value");//测试值
+                    data.push(test_value);
+                    names.push("sum");//测试总数
+                    data.push(item.data.length);
+                    //统计每个不同的数据出现的次数
+                    for(var j=0;j<item.data.length;j++){
+                        var value=item.data[j];
+                        //该数据已经统计过了，跳过
+                        if(names.includes(value)){
+                            continue;
+                        }
+                        var count=1;//该值出现次数
+                        //查找后面的元素，统计出现次数
+                        for(var k=j+1;k<item.data.length;k++){
+                            if(item.data[k]==value){
+                                count++;
+                            }
+                        }
+                        //添加进数组
+                        names.push(value);
+                        data.push(count);
+                    }
+                    var item_json={"head":item.head,"data":data,"heads":names};
+                    axiosData.push(item_json);
+                }
+                
+                //
+                axios
+                    .post("/api/Frequencies", {
+                        "action":"BinomialTest",
+                        "dataList":axiosData
+                    })
+                    .then(response => {
+                        console.log(response.data);
+                        if(response.data.statu=="success")
+                            this.result = response.data;
+                        else
+                            alert(response.data.msg);
+                    })
+                    .catch(error => {
+                        alert("服务器出现了点小问题...");
+                        console.log(error);
+                    })
+
+            } else alert("参数选择错误,请检查!");
         },
         //多变量方差分析manova
         manova() {
@@ -707,7 +1083,7 @@ export default {
                 axios
                     .post("/api/ANOVA", {
                         "action":"ANOVA",
-                        "dataList":axiosData
+                        "dataList":axiosData,
                     })
                     .then(response => {
                         console.log(response.data);
@@ -1067,6 +1443,57 @@ export default {
 
             } else alert("参数选择错误,请检查!");
         },
+        //泊松回归分析
+        poissonRegression() {
+            console.log("confirm to poissonRegression");
+            if (this.dependent_variable != null && this.covariates.length > 0) {
+                console.log("poissonRegression");
+                //检查因变量和协变量的数据是否都是数字，并且检查数据个数是否一致
+                if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
+                    alert("因变量的数据存在非数字，请检查！");
+                    return;
+                }
+                for (var i = 0; i < this.covariates.length; i++) {
+                    if (this.dependent_variable.data.length != this.covariates[i].data.length) {
+                        alert("已选择的项的数据个数不一致，请检查！");
+                        return;
+                    } else {
+                        if (this.check_List_isAllNum(this.covariates[i].data) == false) {
+                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            return;
+                        }
+                    }
+                }
+
+                //处理数据，axiosData用于传到后台
+                var axiosData = new Array();
+                this.dependent_variable.type = "dependent"; //设置类型为因变量
+                axiosData.push(this.dependent_variable); //添加到axiosData
+                for (var i = 0; i < this.covariates.length; i++) {
+                    this.covariates[i].type = "covariate"; //设置类型为协变量
+                    axiosData.push(this.covariates[i]); //添加
+                }
+                //
+                axios
+                    .post("/api/poissonRegression", axiosData
+
+                        // "covariates": this.covariates,
+                        // "dependent_variable": this.dependent_variable
+                    )
+                    .then(response => {
+                        console.log(response.data);
+                        if(response.data.statu=="success")
+                            this.result = response.data;
+                        else
+                            alert(response.data.msg);
+                    })
+                    .catch(error => {
+                        alert("服务器出现了点小问题...");
+                        console.log(error);
+                    })
+
+            } else alert("参数选择错误,请检查!");
+        },
         //处理逻辑回归的公式
         getLogisticFormula() {
             var str = "glm(formula = " + this.dependent_variable.head + " ~ ";
@@ -1221,6 +1648,52 @@ export default {
             this.dependent_variable = null;
             this.result = null;
         },
+        //选择该项为行变量Row(单个)
+        selectRow() {
+            if (this.selected_item != null) {
+                if(this.row_var!=null){
+                    this.data.push(this.row_var);
+                }
+                this.row_var = this.selected_item;
+                //从data中移除该项
+                var index = this.data.indexOf(this.selected_item);
+                this.data.splice(index, 1);
+                this.selected_item = null;
+                this.selected_head= null;
+                this.result = null;
+            }
+        },
+        //移除已选择的行变量Row(单个)
+        deleteRow() {
+            //将该项返回到原来的data
+            this.data.push(this.row_var);
+            //
+            this.row_var = null;
+            this.result = null;
+        },
+        //选择该项为列变量Col(单个)
+        selectCol() {
+            if (this.selected_item != null) {
+                if(this.col_var!=null){
+                    this.data.push(this.col_var);
+                }
+                this.col_var = this.selected_item;
+                //从data中移除该项
+                var index = this.data.indexOf(this.selected_item);
+                this.data.splice(index, 1);
+                this.selected_item = null;
+                this.selected_head= null;
+                this.result = null;
+            }
+        },
+        //移除已选择的列变量Col(单个)
+        deleteCol() {
+            //将该项返回到原来的data
+            this.data.push(this.col_var);
+            //
+            this.col_var = null;
+            this.result = null;
+        },
         //选择数据项
         selectItem(item) {
             this.selected_head=item.head;
@@ -1241,157 +1714,5 @@ export default {
 </script>
 
 <style>
-/* 已选择的变量的项的样式 */
-.depent-var {
-    padding: 2px;
-    padding-left: 5px;
-    border-radius: 3px;
-}
-.depent-var:hover {
-    cursor: pointer;
-    background: rgb(220, 220, 220);
-}
-/* 显示多个因变量的 div*/
-#dependents-div{
-    width:100%;
-    height: 100px;
-    padding: 5px;
-    border-radius: 4px;
-    background: white;
-    color: rgb(235, 174, 61);
-    overflow-y: auto;
-    overflow-x: auto;
-}
-/* 显示 Factor 的 div*/
-#Factor-div{
-    width:100%;
-    height: 100px;
-    padding: 5px;
-    border-radius: 4px;
-    background: white;
-    color: rgb(235, 87, 61);
-    overflow-y: auto;
-    overflow-x: auto;
-}
-/* 显示 Variale 的 div*/
-#Variable-div{
-    width:100%;
-    height: 278px;
-    padding: 5px;
-    border-radius: 4px;
-    background: white;
-    color: rgb(61, 203, 235);
-    overflow-y: auto;
-    overflow-x: auto;
-}
-/* 显示协变量 covariates 的 div */
-#Covar-div {
-    width: 100%;
-    height: 198px;
-    padding: 5px;
-    border-radius: 4px;
-    background: white;
-    color: rgb(61, 203, 235);
-    overflow-y: auto;
-    overflow-x: auto;
-}
-/* 显示单个因变量 dependent-variale 的div */
-#Depent-Var-div {
-    width: 100%;
-    height: 30px;
-    padding: 3px;
-    border-radius: 4px;
-    background: white;
-    color: rgb(235, 174, 61);
-    overflow-x: auto;
-}
-/* 选择按钮的图片样式 */
-.btn-img {
-    width: 15px;
-    height: 15px;
-    margin-top: -5px;
-}
-/* 选择按钮的样式 */
-.select-btn-div {
-    height: 20px;
-    width: 40px;
-    border: rgb(150, 150, 150) solid 1px;
-    border-radius: 4px;
-    background: rgb(245, 245, 245);
-    margin-left: 35%;
-    margin-top: 10px;
-}
-.select-btn-div:hover {
-    cursor: pointer;
-    background: rgb(220, 220, 220);
-}
-/* 右边展示已选的数据项的div */
-#show-selected-div {
-    width: 33%;
-    height: 300px;
-    float: left;
-    margin-left: 20px;
-    /* padding: 10px; */
-    /* background: white; */
-}
-/* 包含中间的按钮的div样式 */
-#mid-btn {
-    text-align: center;
-    margin-left: 20px;
-    float: left;
-    width: 20%;
-    height: 300px;
-    /* background: white; */
-}
-/* 左边的数据项的样式 */
-.select-var {
-    padding-left: 5px;
-    padding-right: 30px;
-    margin-bottom: 2px;
-    border-radius: 4px;
-}
-.select-var:hover {
-    cursor: pointer;
-    background: rgb(200, 200, 200);
-}
-/* 已选择的项的样式 */
-.selected {
-    background: rgb(200, 200, 200);
-}
-/* 左边选择数据项的div */
-#select-div {
-    padding: 4px;
-    padding-bottom: 200px;
-    margin-left: 20px;
-    width: 33%;
-    height: 300px;
-    overflow-y: auto;
-    overflow-x: auto;
-    background: white;
-    border-radius: 5px;
-    float: left;
-}
-/* 左边的div */
-#main-left-div {
-    width: 42%;
-    padding: 10px;
-    height: 760px;
-    background: rgb(235, 235, 235);
-    font-size: 14px;
-    float: left;
-    border-radius: 5px;
-    /* border:rgb(100,100,100) solid 1px; */
-}
-/* 右边显示结果的div */
-#main-right-div {
-    width: 58%;
-    height: 760px;
-    overflow-y:auto;
-    overflow-x: auto;
-    padding: 10px;
-    background: white;
-    float: left;
-    border-radius: 5px;
-    /* border:rgb(100,100,100) solid 1px; */
-}
+@import url("../assets/css/main.css");
 </style>

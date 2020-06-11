@@ -9,17 +9,13 @@
                 描述性分析
             </div>
             <div class="dropdown-menu">
-                <!-- <a class="dropdown-item" href="#">线性回归(Linear Regression)</a> -->
-                <router-link :to="{path:'/Analysis',query:{'method':'DescriptiveStatistics'}}" class="dropdown-item">
+                <router-link :to="{path:'/Descriptives/',query:{'method':'DescriptiveStatistics'}}" class="dropdown-item">
                     描述性统计(Descriptive Statistics)
                 </router-link>
                 <hr>
-                <router-link :to="{path:'/Analysis',query:{'method':'ReliabilityAnalysis'}}" class="dropdown-item">
+                <router-link :to="{path:'/Descriptives/',query:{'method':'ReliabilityAnalysis'}}" class="dropdown-item">
                     可靠性分析(Reliability Analysis)
                 </router-link>
-                <!-- <router-link :to="{path:'/Analysis',query:{'method':'LinearRegression'}}" class="dropdown-item">
-                    线性回归(Linear Regression)
-                </router-link> -->
             </div>
         </div>
         <!-- T-检验 -->
@@ -31,13 +27,13 @@
             </div>
             <div class="dropdown-menu">
                 <!-- <a class="dropdown-item" href="#">线性回归(Linear Regression)</a> -->
-                <router-link :to="{path:'/Analysis',query:{'method':'IndependentSamplesT-Test'}}" class="dropdown-item">
+                <router-link :to="{path:'/T_test/',query:{'method':'IndependentSamplesT-Test'}}" class="dropdown-item">
                     独立样本T检验(Independent Samples T-Test)
                 </router-link>
-                <router-link :to="{path:'/Analysis',query:{'method':'PairedSamplesT-Test'}}" class="dropdown-item">
+                <router-link :to="{path:'/T_test/',query:{'method':'PairedSamplesT-Test'}}" class="dropdown-item">
                     配对样本T检验(Paired Samples T-Test)
                 </router-link>
-                <router-link :to="{path:'/Analysis',query:{'method':'OneSampleT-Test'}}" class="dropdown-item">
+                <router-link :to="{path:'/T_test/',query:{'method':'OneSampleT-Test'}}" class="dropdown-item">
                     单样本T检验(One Sample T-Test)
                 </router-link>
             </div>
@@ -51,15 +47,18 @@
             </div>
             <div class="dropdown-menu">
                 <!-- <a class="dropdown-item" href="#">线性回归(Linear Regression)</a> -->
-                <router-link :to="{path:'/Analysis',query:{'method':'Correlation'}}" class="dropdown-item">
+                <router-link :to="{path:'/Regression/',query:{'method':'Correlation'}}" class="dropdown-item">
                     相关性(Correlation)
                 </router-link>
                 <hr>
-                <router-link :to="{path:'/Analysis',query:{'method':'LinearRegression'}}" class="dropdown-item">
+                <router-link :to="{path:'/Regression/',query:{'method':'LinearRegression'}}" class="dropdown-item">
                     线性回归(Linear Regression)
                 </router-link>
-                <router-link :to="{path:'/Analysis',query:{'method':'LogisticRegression'}}" class="dropdown-item">
+                <router-link :to="{path:'/Regression/',query:{'method':'LogisticRegression'}}" class="dropdown-item">
                     逻辑回归(Logistic Regression)
+                </router-link>
+                <router-link :to="{path:'/Regression/',query:{'method':'PoissonRegression'}}" class="dropdown-item">
+                    泊松回归(Poisson Regression)
                 </router-link>
                 <!-- <hr style="margin-top:5px;margin-bottom:5px;">
                 <a class="dropdown-item" href="#">贝叶斯相关性(Bayesian Correlation)</a>
@@ -75,17 +74,62 @@
             </div>
             <div class="dropdown-menu">
                 <!-- <a class="dropdown-item" href="#">线性回归(Linear Regression)</a> -->
-                <router-link :to="{path:'/Analysis',query:{'method':'ANOVA'}}" class="dropdown-item">
+                <router-link :to="{path:'/Anova/',query:{'method':'ANOVA'}}" class="dropdown-item">
                     方差分析(ANOVA)
                 </router-link>
-                <router-link :to="{path:'/Analysis',query:{'method':'ANCOVA'}}" class="dropdown-item">
+                <router-link :to="{path:'/Anova/',query:{'method':'ANCOVA'}}" class="dropdown-item">
                     协方差分析(ANCOVA)
                 </router-link>
-                <router-link :to="{path:'/Analysis',query:{'method':'MANOVA'}}" class="dropdown-item">
+                <router-link :to="{path:'/Anova/',query:{'method':'MANOVA'}}" class="dropdown-item">
                     多变量方差分析(MANOVA)
                 </router-link>
                 <!-- <router-link :to="{path:'/Analysis',query:{'method':'RepeatedMeasuresANOVA'}}" class="dropdown-item">
                     重复测量方差分析(Repeated Measures ANOVA)
+                </router-link> -->
+            </div>
+        </div>
+        <!-- 频率分析 -->
+        <div class="dropdown">
+            <div class="dropdown-toggle nav-div" data-toggle="dropdown">
+                <img class="nav-img" src="../assets/Frequencies.png" alt="Regression">
+                <br>
+                频率分析
+            </div>
+            <div class="dropdown-menu">
+                <!-- <a class="dropdown-item" href="#">线性回归(Linear Regression)</a> -->
+                <router-link :to="{path:'/Frequencies/',query:{'method':'BinomialTest'}}" class="dropdown-item">
+                    二项检验(Binomial Test)
+                </router-link>
+                <hr>
+                <!-- <router-link :to="{path:'/Analysis',query:{'method':'MultinomialTest'}}" class="dropdown-item">
+                    多项检验(Multinomial Test)
+                </router-link>
+                <hr> -->
+                <router-link :to="{path:'/Frequencies/',query:{'method':'ContingencyTables'}}" class="dropdown-item">
+                    列联表(Contingency Tables)
+                </router-link>
+                <router-link :to="{path:'/Frequencies/',query:{'method':'Log-LinearRegression'}}" class="dropdown-item">
+                    对数线性回归(Log-Linear Regression)
+                </router-link>
+            </div>
+        </div>
+        <!-- 因子分析 -->
+        <div class="dropdown">
+            <div class="dropdown-toggle nav-div" data-toggle="dropdown">
+                <img class="nav-img" src="../assets/Factor.png" alt="Regression">
+                <br>
+                因素分析
+            </div>
+            <div class="dropdown-menu">
+                <router-link :to="{path:'/Factor/',query:{'method':'PrincipalComponentAnalysis'}}" class="dropdown-item">
+                    主成分分析(Principal Component Analysis)
+                </router-link>
+                <hr>
+                <router-link :to="{path:'/Factor/',query:{'method':'ExploratoryFactorAnalysis'}}" class="dropdown-item">
+                    探索性因子分析(Exploratory Factor Analysis)
+                </router-link>
+                <!-- <router-link :to="{path:'/Factor/',query:{'method':'ConfirmatoryFactorAnalysis'}}" class="dropdown-item">
+                   验证性因子分析(Confirmatory Factor Analysis)
                 </router-link> -->
             </div>
         </div>
@@ -100,7 +144,7 @@
                 </td>
             </tr>
             <tr v-for="r in rowNum" :key="r">
-                <td :id="r" @click="clearRow" class="my-rowNum" style="height:20px;text-align:center;" title="点击删除此行数据">{{r}}</td>
+                <td :id="r" @click="clearRow" class="my-rowNum" style="height:20px;text-align:center;" title="点击删除此行数据">{{r-1}}</td>
                 <td v-for="c in colNum" :key="c">
                     <input :id="c*max+r" type="text" @keydown.enter="moveFocus" class="my-td-input" :class="{'table-head-input':r==1}">
                 </td>
@@ -251,8 +295,7 @@ export default {
 
 <style>
 hr{
-    margin-top:3px;
-    margin-bottom:3px;
+    margin:3px;
 }
 #nav {
     width: 100%;
@@ -265,7 +308,7 @@ hr{
 .nav-img{
     width: 70px;
     height: 45px;
-    transition: all 0.3s;
+    transition: all 0.1s;
 }
 .nav-div {
     height: 55px;

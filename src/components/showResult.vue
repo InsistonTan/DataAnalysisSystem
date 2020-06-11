@@ -48,7 +48,7 @@
             </div>
         </div>
         <!-- 逻辑回归的结果展示 -->
-        <div v-else-if="method=='LogisticRegression'">
+        <div v-else-if="method=='LogisticRegression'||method=='PoissonRegression'">
             <div>
                 <b>Coefficients:</b>
                 <br>
@@ -68,7 +68,7 @@
                         <td>{{value["Pr(>|z|)"]}}</td>
                     </tr>
                 </table>
-                <b>Residuals:</b>
+                <b>Deviance Residuals:</b>
                 <table class="table table-striped" style="background:rgb(235,235,235);">
                     <tr>
                         <td>Min</td>
@@ -392,12 +392,202 @@
                 </tr>
             </table>
         </div>
+        <!-- 二项检验的结果 -->
+        <div v-else-if="method=='BinomialTest'">
+            <div v-if="key!='statu'" v-for="(value,key) in result">
+                <div><b>变量<span style="color:green;">{{key}}</span>的结果
+                    (variable <span style="color:green;">{{key}}</span> result):
+                </b></div>
+                <table class="table table-striped" style="background:rgb(235,235,235);">
+                    <tr>
+                        <td>Level</td>
+                        <td>Counts</td>
+                        <td>Total</td>
+                        <td>Proportion</td>
+                        <td>P-value</td>
+                        <td>95%置信区间</td>
+                    </tr>
+                    <tr v-for="(data,name) in value">
+                        <td>{{name}}</td>
+                        <td>{{data['counts']}}</td>
+                        <td>{{data['total']}}</td>
+                        <td>{{data['proportion']}}</td>
+                        <td>{{data['p-value']}}</td>
+                        <td>{{data['interval']}}</td>
+                    </tr>
+                </table>
+            </div>
+            
+        </div>
+        <!-- 对数线性回归的结果展示 -->
+        <div v-else-if="method=='Log-LinearRegression'">
+            <div>
+                <div><b>ANOVA:</b></div>
+                <table class="table table-striped" style="background:rgb(235,235,235);">
+                    <tr>
+                        <td></td>
+                        <td>Df</td>
+                        <td>总方差和(Sum Sq)</td>
+                        <td>平均方差和(Mean Sq)</td>
+                        <td>F统计量(F value)</td>
+                        <td>P值(Pr(>F))</td>
+                    </tr>
+                    <tr v-for="(value,key) in result['anova']">
+                        <td>{{key}}</td>
+                        <td>{{value['Df']}}</td>
+                        <td>{{value['Sum Sq']}}</td>
+                        <td>{{value['Mean Sq']}}</td>
+                        <td>{{value['F value']}}</td>
+                        <td>{{value['Pr(>F)']}}</td>
+                    </tr>
+                </table>
+                <b>Coefficients:</b>
+                <br>
+                <table class="table table-striped" style="background:rgb(235,235,235);">
+                    <tr>
+                        <td></td>
+                        <td>Estimate</td>
+                        <td>Std.Error</td>
+                        <td>z_value</td>
+                        <td>Pr(>|z|)</td>
+                    </tr>
+                    <tr v-for="(value,key) in result['coefficients']">
+                        <td><b>{{key}}</b></td>
+                        <td>{{value["Estimate"]}}</td>
+                        <td>{{value["Std. Error"]}}</td>
+                        <td>{{value["z value"]}}</td>
+                        <td>{{value["Pr(>|z|)"]}}</td>
+                    </tr>
+                </table>
+                <b>Deviance Residuals:</b>
+                <table class="table table-striped" style="background:rgb(235,235,235);">
+                    <tr>
+                        <td>Min</td>
+                        <td>1Q</td>
+                        <td>Median</td>
+                        <td>3Q</td>
+                        <td>Max</td>
+                    </tr>
+                    <tr>
+                        <td>{{result["deviance.resid"]["Min"]}}</td>
+                        <td>{{result["deviance.resid"]["1Q"]}}</td>
+                        <td>{{result["deviance.resid"]["Median"]}}</td>
+                        <td>{{result["deviance.resid"]["3Q"]}}</td>
+                        <td>{{result["deviance.resid"]["Max"]}}</td>
+                    </tr>
+                </table>
+                <b>Null deviance:&nbsp;</b>{{result["Null deviance"]}}
+                <br>
+                <b>Residual deviance:&nbsp;</b>{{result["Residual deviance"]}}
+                <br>
+                <b>AIC:&nbsp;</b>{{result["AIC"]}}
+                <br>
+                <b>Number of Fisher Scoring iterations:&nbsp;</b>{{result["iter"]}}
+            </div>
+        </div>
+        <!-- 列联表的结果 -->
+        <div v-else-if="method=='ContingencyTables'">
+            <div><b>table:</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td><b>{{row_var.head}}</b>&nbsp;\&nbsp;<b>{{col_var.head}}</b></td>
+                    <td v-for="name in result['frequency'][col_var.head]">
+                        {{name}}
+                    </td>
+                    <td>Total</td>
+                </tr>
+                <tr v-for="(value,key) in result['frequency'][row_var.head]">
+                    <td>{{key}}</td>
+                    <td v-for="num in value">
+                        {{num}}
+                    </td>
+                </tr>
+            </table>
+            <div><b>Pearson's Chi-squared test:</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td>Chi^2</td>
+                    <td>d.f.</td>
+                    <td>p-value</td>
+                </tr>
+                <tr>
+                    <td>{{result['chiSquared']['Chi^2']}}</td>
+                    <td>{{result['chiSquared']['d.f.']}}</td>
+                    <td>{{result['chiSquared']['p_value']}}</td>
+                </tr>
+            </table>
+        </div>
+        <!-- 主成分分析的结果 -->
+        <div v-else-if="method=='PrincipalComponentAnalysis'">
+            <div><b>Importance of components:</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td></td>
+                    <td v-for="name in result['importance']['cnames']">
+                        {{name}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>标准差(Standard deviation)</td>
+                    <td v-for="value in result['importance']['sdev']">
+                        {{value}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>方差贡献率(Proportion of Variance)</td>
+                    <td v-for="value in result['importance']['pov']">
+                        {{value}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>累计方差贡献率(Cumulative Proportion)</td>
+                    <td v-for="value in result['importance']['cp']">
+                        {{value}}
+                    </td>
+                </tr>
+            </table>
+            <div><b>Loadings:</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td></td>
+                    <td v-for="name in result['importance']['cnames']">{{name}}</td>
+                </tr>
+                <tr v-for="(value,key) in result['importance']['loadings']">
+                    <td>{{key}}</td>
+                    <td v-for="val in value">{{val}}</td>
+                </tr>
+            </table>
+        </div>
+        <!-- 探索性因子分析的结果 -->
+        <div v-if="method=='ExploratoryFactorAnalysis'">
+            <div><b>Loadings:</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td></td>
+                    <td v-for="name in result['loadings']['loadingNames']">{{name}}</td>
+                </tr>
+                <tr v-if="key!='loadingNames'" v-for="(value,key) in result['loadings']">
+                    <td>{{key}}</td>
+                    <td v-for="lname in result['loadings']['loadingNames']">{{value[lname]}}</td>
+                </tr>
+            </table>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td></td>
+                    <td v-for="name in result['unknow']['unknowNames']">{{name}}</td>
+                </tr>
+                <tr v-if="key!='unknowNames'" v-for="(value,key) in result['unknow']">
+                    <td>{{key}}</td>
+                    <td v-for="uname in result['unknow']['unknowNames']">{{value[uname]}}</td>
+                </tr>
+            </table>
+        </div>
     </div>
 </template>
 <script>
 export default {
     name:'showResult',
-    props:["result","method","covariates","variables"],
+    props:["result","method","covariates","variables","row_var","col_var"],
     data(){
         return{
 
