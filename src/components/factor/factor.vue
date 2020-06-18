@@ -94,6 +94,8 @@
             </div>
         </div>
     </div>
+    <!-- 消息框 -->
+    <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
 </div>
 </template>
 
@@ -102,10 +104,12 @@ import GlobalData from "@/components/GlobalData";
 import axios from "axios";
 import qs from "qs";
 import ShowResult from '@/components/showResult';
+import MyModal from "@/components/function/myModal";
 export default {
     name: 'factor',
     components: {
-        ShowResult
+        ShowResult,
+        MyModal
     },
     data() {
         return {
@@ -113,15 +117,11 @@ export default {
             data: GlobalData.data,
             selected_head: "",
             selected_item: null,
-            dependent_variable: null,
-            row_var:null,
-            col_var:null,
-            dependents:[],
-            covariates: [],
             variables:[],
             factors:[],
             result: null,
             formula: null,
+            showModal:false,
         }
     },
     mounted() {
@@ -152,6 +152,7 @@ export default {
                     alert("提取的因字数应该小于"+(this.variables.length-1)+"，请检查！");
                     return;
                 }
+                
                 //检查变量的数据是否都是数字，并且检查数据个数是否一致
                 var len=this.variables[0].data.length;
                 for (var i = 0; i < this.variables.length; i++) {
@@ -164,7 +165,8 @@ export default {
                         return;
                     }
                 }
-
+                //
+                this.showModal=true;
                 //
                 axios
                     .post("/api/Factor", {
@@ -178,10 +180,14 @@ export default {
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");
@@ -203,7 +209,8 @@ export default {
                         return;
                     }
                 }
-
+                //
+                    this.showModal=true;
                 //
                 axios
                     .post("/api/Factor", {
@@ -216,37 +223,19 @@ export default {
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");
         },
 
-        //选择该项为因变量（多个）
-        selectDependents() {
-            if (this.selected_item != null) {
-                this.dependents.push(this.selected_item);
-                //从data中移除该项
-                var index = this.data.indexOf(this.selected_item);
-                this.data.splice(index, 1);
-                this.selected_item = null;
-                this.selected_head= null;
-                this.result = null;      
-            }
-        },
-        //移除已选择的因变量
-        deleteDependents(item) {
-            //将该项返回到原来的data
-            this.data.push(item);
-            //获取这个item的位置
-            var index = this.dependents.indexOf(item);
-            //从dependents移除这个item
-            this.dependents.splice(index, 1);
-            this.result = null;  
-        },
         //选择该项为factor
         selectFactor() {
             if (this.selected_item != null) {
@@ -310,97 +299,7 @@ export default {
             }
             
         },
-        //选择该项为协变量 Covariate
-        selectCovariate() {
-            if (this.selected_item != null) {
-                this.covariates.push(this.selected_item);
-                //从data中移除该项
-                var index = this.data.indexOf(this.selected_item);
-                this.data.splice(index, 1);
-                this.selected_item = null;
-                this.selected_head= null;
-                this.result = null;
-            }
-        },
-        //移除已选择的协变量 Covariate
-        deleteCovar(item) {
-            //将该项返回到原来的data
-            this.data.push(item);
-            //获取这个item的位置
-            var index = this.covariates.indexOf(item);
-            //从covariates移除这个item
-            this.covariates.splice(index, 1);
-            this.result = null;
-        },
-        //选择该项为因变量(单个)
-        selectDenpendent() {
-            if (this.selected_item != null) {
-                if(this.dependent_variable!=null){
-                    this.data.push(this.dependent_variable);
-                }
-                this.dependent_variable = this.selected_item;
-                //从data中移除该项
-                var index = this.data.indexOf(this.selected_item);
-                this.data.splice(index, 1);
-                this.selected_item = null;
-                this.selected_head= null;
-                this.result = null;
-            }
-        },
-        //移除已选择的因变量(单个)
-        deleteDepent() {
-            //将该项返回到原来的data
-            this.data.push(this.dependent_variable);
-            //
-            this.dependent_variable = null;
-            this.result = null;
-        },
-        //选择该项为行变量Row(单个)
-        selectRow() {
-            if (this.selected_item != null) {
-                if(this.row_var!=null){
-                    this.data.push(this.row_var);
-                }
-                this.row_var = this.selected_item;
-                //从data中移除该项
-                var index = this.data.indexOf(this.selected_item);
-                this.data.splice(index, 1);
-                this.selected_item = null;
-                this.selected_head= null;
-                this.result = null;
-            }
-        },
-        //移除已选择的行变量Row(单个)
-        deleteRow() {
-            //将该项返回到原来的data
-            this.data.push(this.row_var);
-            //
-            this.row_var = null;
-            this.result = null;
-        },
-        //选择该项为列变量Col(单个)
-        selectCol() {
-            if (this.selected_item != null) {
-                if(this.col_var!=null){
-                    this.data.push(this.col_var);
-                }
-                this.col_var = this.selected_item;
-                //从data中移除该项
-                var index = this.data.indexOf(this.selected_item);
-                this.data.splice(index, 1);
-                this.selected_item = null;
-                this.selected_head= null;
-                this.result = null;
-            }
-        },
-        //移除已选择的列变量Col(单个)
-        deleteCol() {
-            //将该项返回到原来的data
-            this.data.push(this.col_var);
-            //
-            this.col_var = null;
-            this.result = null;
-        },
+        
         //选择数据项
         selectItem(item) {
             this.selected_head=item.head;

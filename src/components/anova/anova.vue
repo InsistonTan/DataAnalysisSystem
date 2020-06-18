@@ -168,6 +168,8 @@
             </div>
         </div>
     </div>
+    <!-- 消息框 -->
+    <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
 </div>
 </template>
 
@@ -176,10 +178,12 @@ import GlobalData from "@/components/GlobalData";
 import axios from "axios";
 import qs from "qs";
 import ShowResult from '@/components/showResult';
+import MyModal from "@/components/function/myModal";
 export default {
     name: 'anova',
     components: {
-        ShowResult
+        ShowResult,
+        MyModal
     },
     data() {
         return {
@@ -192,6 +196,7 @@ export default {
             covariates: [],
             factors:[],
             result: null,
+            showModal:false,
         }
     },
     mounted() {
@@ -254,7 +259,8 @@ export default {
                     this.factors[i].type = "factor"; //设置类型为固定因子
                     axiosData.push(this.factors[i]); //添加进axiosData
                 }
-                
+                //
+                this.showModal=true;
                 //
                 axios
                     .post("/api/ANOVA", {
@@ -262,15 +268,19 @@ export default {
                         "dataList":axiosData
                     })
                     .then(response => {
-                        console.log(response.data);
+                        //console.log(response.data);
                         if(response.data.statu=="success")
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");
@@ -327,21 +337,27 @@ export default {
                     axiosData.push(this.covariates[i]); //添加进axiosData
                 }
                 //
+                    this.showModal=true;
+                //
                 axios
                     .post("/api/ANOVA", {
                         "action":"ANCOVA",
                         "dataList":axiosData
                     })
                     .then(response => {
-                        console.log(response.data);
+                        //console.log(response.data);
                         if(response.data.statu=="success")
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");
@@ -376,21 +392,28 @@ export default {
                     axiosData.push(this.covariates[i]); //添加进axiosData
                 }
                 //
+                //
+                this.showModal=true;
+                //
                 axios
                     .post("/api/ANOVA", {
                         "action":"ANOVA",
                         "dataList":axiosData,
                     })
                     .then(response => {
-                        console.log(response.data);
+                        //console.log(response.data);
                         if(response.data.statu=="success")
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");

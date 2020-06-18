@@ -154,6 +154,8 @@
             </div>
         </div>
     </div>
+    <!-- 消息框 -->
+    <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
 </div>
 </template>
 
@@ -162,10 +164,12 @@ import GlobalData from "@/components/GlobalData";
 import axios from "axios";
 import qs from "qs";
 import ShowResult from '@/components/showResult';
+import MyModal from "@/components/function/myModal";
 export default {
     name: 'frequencies',
     components: {
-        ShowResult
+        ShowResult,
+        MyModal
     },
     data() {
         return {
@@ -180,6 +184,7 @@ export default {
             variables:[],
             result: null,
             formula: null,
+            showModal:false,
         }
     },
     mounted() {
@@ -226,6 +231,8 @@ export default {
                 axiosData.push(row);
                 axiosData.push(col);
                 //
+                this.showModal=true;
+                //
                 axios
                     .post("/api/Frequencies", {
                         "action":"ContingencyTables",
@@ -237,10 +244,14 @@ export default {
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");
@@ -280,6 +291,8 @@ export default {
                     axiosData.push(this.covariates[i]); //添加
                 }
                 //
+                this.showModal=true;
+                //
                 axios
                     .post("/api/Frequencies", {
                         "action":"Log-LinearRegression",
@@ -291,10 +304,14 @@ export default {
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");
@@ -342,7 +359,8 @@ export default {
                     var item_json={"head":item.head,"data":data,"heads":names};
                     axiosData.push(item_json);
                 }
-                
+                //
+                this.showModal=true;
                 //
                 axios
                     .post("/api/Frequencies", {
@@ -355,10 +373,14 @@ export default {
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");

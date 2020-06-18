@@ -124,6 +124,8 @@
             </div>
         </div>
     </div>
+    <!-- 消息框 -->
+    <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
 </div>
 </template>
 
@@ -132,10 +134,12 @@ import GlobalData from "@/components/GlobalData";
 import axios from "axios";
 import qs from "qs";
 import ShowResult from '@/components/showResult';
+import MyModal from "@/components/function/myModal";
 export default {
     name: 'regression',
     components: {
-        ShowResult
+        ShowResult,
+        MyModal
     },
     data() {
         return {
@@ -148,6 +152,7 @@ export default {
             variables:[],
             result: null,
             formula: null,
+            showModal:false,
         }
     },
     mounted() {
@@ -229,7 +234,8 @@ export default {
                         return;
                     }
                 }
-
+                //
+                this.showModal=true;
                 //
                 axios
                     .post("/api/correlation", this.variables)
@@ -239,10 +245,14 @@ export default {
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");
@@ -278,6 +288,8 @@ export default {
                     axiosData.push(this.covariates[i]); //添加
                 }
                 //
+                this.showModal=true;
+                //
                 axios
                     .post("/api/linearRegression", axiosData
 
@@ -290,10 +302,14 @@ export default {
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");
@@ -336,6 +352,8 @@ export default {
                     axiosData.push(this.covariates[i]); //添加
                 }
                 //
+                this.showModal=true;
+                //
                 axios
                     .post("/api/logisticRegression", axiosData)
                     .then(response => {
@@ -344,10 +362,14 @@ export default {
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");
@@ -382,6 +404,9 @@ export default {
                     this.covariates[i].type = "covariate"; //设置类型为协变量
                     axiosData.push(this.covariates[i]); //添加
                 }
+
+                //
+                this.showModal=true;
                 //
                 axios
                     .post("/api/poissonRegression", axiosData
@@ -395,10 +420,14 @@ export default {
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");

@@ -96,6 +96,8 @@
         </div>
         <!-- 相关性的结果展示 -->
         <div v-else-if="method=='Correlation'">
+            <div><b>相关系数可视化:</b></div>
+            <div><img :src="result['covPic']" alt="相关系数图"></div>
             <div v-if="name!='statu'" v-for="(value,name) in result">
                 <b v-if="name=='cov'">协方差&nbsp;Covariance:</b>
                 <b v-else>{{name}}&nbsp;相关系数:</b>
@@ -110,7 +112,6 @@
                     </tr>
                 </table>
             </div>
-            
         </div>
         <!-- 描述性统计的结果展示 -->
         <div v-else-if="method=='DescriptiveStatistics'">
@@ -155,6 +156,10 @@
                     <td>{{value['kurtosis']}}</td>
                 </tr>
             </table>
+            <div><b>直方图-密度曲线:</b></div>
+            <div v-for="url in result['pics']">
+                <img :src="url" alt="直方图">
+            </div>
         </div>
         <!-- 可靠性分析的结果展示 -->
         <div v-else-if="method=='ReliabilityAnalysis'">
@@ -519,6 +524,8 @@
         </div>
         <!-- 主成分分析的结果 -->
         <div v-else-if="method=='PrincipalComponentAnalysis'">
+            <div><b>平行分析碎石图:</b></div>
+            <div><img :src="result['parallelPic']" alt="平行分析碎石图"></div>
             <div><b>Importance of components:</b></div>
             <table class="table table-striped" style="background:rgb(235,235,235);">
                 <tr>
@@ -560,6 +567,8 @@
         </div>
         <!-- 探索性因子分析的结果 -->
         <div v-if="method=='ExploratoryFactorAnalysis'">
+            <div><b>平行分析碎石图:</b></div>
+            <div><img :src="result['parallelPic']" alt="平行分析碎石图"></div>
             <div><b>Loadings:</b></div>
             <table class="table table-striped" style="background:rgb(235,235,235);">
                 <tr>
@@ -588,6 +597,9 @@
 export default {
     name:'showResult',
     props:["result","method","covariates","variables","row_var","col_var"],
+    components:{
+
+    },
     data(){
         return{
 
@@ -599,4 +611,7 @@ export default {
     hr{
         margin: 5px;
     }
+    /* .pic-div{
+        w
+    } */
 </style>

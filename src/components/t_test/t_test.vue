@@ -141,6 +141,8 @@
         </div>
         
     </div>
+    <!-- 消息框 -->
+    <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
 </div>
 </template>
 
@@ -149,10 +151,12 @@ import GlobalData from "@/components/GlobalData";
 import axios from "axios";
 import qs from "qs";
 import ShowResult from '@/components/showResult';
+import MyModal from "@/components/function/myModal";
 export default {
     name: 't_test',
     components: {
-        ShowResult
+        ShowResult,
+        MyModal
     },
     data() {
         return {
@@ -164,6 +168,7 @@ export default {
             covariates: [],
             variables:[],
             result: null,
+            showModal:false,
         }
     },
     mounted() {
@@ -198,6 +203,8 @@ export default {
                     return;
                 }
                 //
+                this.showModal=true;
+                //
                 axios
                     .post("/api/T-test", {
                         "action":"oneSample",
@@ -210,10 +217,14 @@ export default {
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");
@@ -245,6 +256,8 @@ export default {
                 }
 
                 //
+                this.showModal=true;
+                //
                 axios
                     .post("/api/T-test", {
                         "action":"pairedSample",
@@ -256,10 +269,14 @@ export default {
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");
@@ -289,6 +306,9 @@ export default {
                     this.covariates[i].type = "variable"; //设置类型为变量
                     axiosData.push(this.covariates[i]); //添加
                 }
+
+                //
+                this.showModal=true;
                 //
                 axios
                     .post("/api/T-test", {
@@ -301,10 +321,14 @@ export default {
                             this.result = response.data;
                         else
                             alert(response.data.msg);
+                        //
+                        this.showModal=false;
                     })
                     .catch(error => {
                         alert("服务器出现了点小问题...");
                         console.log(error);
+                        //
+                        this.showModal=false;
                     })
 
             } else alert("参数选择错误,请检查!");
