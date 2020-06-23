@@ -5,13 +5,15 @@
         <!-- title -->
         <div style="padding-bottom: 20px;">
             <b v-if="method=='LinearRegression'">线性回归(linear Regression)</b>
-            <b v-else-if="method=='LogisticRegression'">逻辑回归(logisticRegression)</b>
-            <b v-else-if="method=='PoissonRegression'">泊松回归(PoissonRegression)</b>
-            <b v-else-if="method=='Correlation'">相关性分析(correlation)</b>
+            <b v-else-if="method=='LogisticRegression'">逻辑回归(logistic Regression)</b>
+            <b v-else-if="method=='PoissonRegression'">泊松回归(Poisson Regression)</b>
+            <b v-else-if="method=='Correlation'">相关性分析(Correlation)</b>
+            <b v-else-if="method=='BayesCorrelation'">贝叶斯相关性(Bayesian Correlation)</b>
+            <b v-else-if="method=='BayesLinearRegression'">贝叶斯线性回归(Bayesian Linear Regression)</b>
         </div>
 
         <!-- 线性回归和逻辑回归的界面 -->
-        <div v-if="method=='LinearRegression'||method=='LogisticRegression'||method=='PoissonRegression'||method=='Log-LinearRegression'">
+        <div v-if="method=='LinearRegression'||method=='LogisticRegression'||method=='PoissonRegression'||method=='Log-LinearRegression'||method=='BayesLinearRegression'">
             <!-- 左边选择变量的div -->
             <div id="select-div">
                 <div v-for="item in data" :class="{'selected':selected_head==item.head}" @click="selectItem(item)" class="select-var" :key="item.head">
@@ -49,7 +51,7 @@
         </div>
 
         <!-- 相关性的界面 -->
-        <div v-else-if="method=='Correlation'">
+        <div v-else-if="method=='Correlation'||method=='BayesCorrelation'">
             <!-- 左边选择变量的div -->
             <div id="select-div">
                 <div :class="{'selected':selected_head==item.head}" @click="selectItem(item)" class="select-var" v-for="item in data" :key="item.head">
@@ -123,6 +125,20 @@
                 <ShowResult v-if="result!=null&&result!=undefined&&variables.length>0" :result="result" :method="method" :variables="variables"></ShowResult>
             </div>
         </div>
+        <!-- 贝叶斯线性回归的结果 -->
+        <div v-else-if="method=='BayesLinearRegression'">
+            <div><h5><b>Bayesian Linear Regression</b></h5></div>
+            <div v-if="result!=null">
+                <ShowResult v-if="result!=null&&result!=undefined&&covariates.length>0" :result="result" :method="method" :covariates="covariates"></ShowResult>
+            </div>
+        </div>
+        <!-- 贝叶斯相关性的结果 -->
+        <div v-else-if="method=='BayesCorrelation'">
+            <div><h5><b>Bayesian Correlation</b></h5></div>
+            <div v-if="result!=null">
+                <ShowResult v-if="result!=null&&result!=undefined&&variables.length>0" :result="result" :method="method" :variables="variables"></ShowResult>
+            </div>
+        </div>
     </div>
     <!-- 消息框 -->
     <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
@@ -169,6 +185,10 @@ export default {
                 this.poissonRegression();
             else if (this.method == "Correlation")
                 this.correlation();
+            else if (this.method == "BayesLinearRegression")
+                this.bayesLinearRegression();
+            else if (this.method == "BayesCorrelation")
+                this.bayesCorrelation();
         },
         //处理获得分析公式
         getFormula() {
@@ -217,6 +237,106 @@ export default {
                 return str;
             }
         },
+        //贝叶斯相关性分析
+        bayesCorrelation(){
+            console.log("confirm to BayesCorrelation");
+            if (this.variables.length > 0) {
+                console.log("BayesCorrelation");
+                //检查变量的数据是否都是数字，并且检查数据个数是否一致
+                var len=this.variables[0].data.length;
+                for (var i = 0; i < this.variables.length; i++) {
+                    if (this.variables[i].data.length!=len) {
+                        alert("已选择的变量的数据个数不一致，请检查！");
+                        return;
+                    } 
+                    if (this.check_List_isAllNum(this.variables[i].data) == false) {
+                        alert("变量"+this.variables[i].head+"中数据存在非数字，请检查！");
+                        return;
+                    }
+                }
+                //
+                this.showModal=true;
+                //
+                axios
+                    .post("/api/Regression",{
+                        "action":"bayesCorrelation",
+                        "dataList":this.variables
+                    })
+                    .then(response => {
+                        console.log(response.data);
+                        if(response.data.statu=="success")
+                            this.result = response.data;
+                        else
+                            alert(response.data.msg);
+                        //
+                        this.showModal=false;
+                    })
+                    .catch(error => {
+                        alert("服务器出现了点小问题...");
+                        console.log(error);
+                        //
+                        this.showModal=false;
+                    })
+
+            } else alert("参数选择错误,请检查!");
+        },
+        //贝叶斯线性回归分析
+        bayesLinearRegression() {
+            console.log("confirm to BayesLinearRegression");
+            if (this.dependent_variable != null && this.covariates.length > 0) {
+                console.log("BayesLinearRegression");
+                //检查因变量和协变量的数据是否都是数字，并且检查数据个数是否一致
+                if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
+                    alert("因变量的数据存在非数字，请检查！");
+                    return;
+                }
+                for (var i = 0; i < this.covariates.length; i++) {
+                    if (this.dependent_variable.data.length != this.covariates[i].data.length) {
+                        alert("已选择的项的数据个数不一致，请检查！");
+                        return;
+                    } else {
+                        if (this.check_List_isAllNum(this.covariates[i].data) == false) {
+                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            return;
+                        }
+                    }
+                }
+
+                //处理数据，axiosData用于传到后台
+                var axiosData = new Array();
+                this.dependent_variable.type = "dependent"; //设置类型为因变量
+                axiosData.push(this.dependent_variable); //添加到axiosData
+                for (var i = 0; i < this.covariates.length; i++) {
+                    this.covariates[i].type = "covariate"; //设置类型为协变量
+                    axiosData.push(this.covariates[i]); //添加
+                }
+
+                //
+                this.showModal=true;
+                //
+                axios
+                    .post("/api/Regression",{
+                        "action":"bayesLinearRegression",
+                        "dataList":axiosData
+                    })
+                    .then(response => {
+                        console.log(response.data);
+                        if(response.data.statu=="success")
+                            this.result = response.data;
+                        else
+                            alert(response.data.msg);
+                        //
+                        this.showModal=false;
+                    })
+                    .catch(error => {
+                        alert("服务器出现了点小问题...");
+                        console.log(error);
+                        //
+                        this.showModal=false;
+                    })
+
+            } else alert("参数选择错误,请检查!");
+        },
         //相关性分析
         correlation(){
             console.log("confirm to correlation");
@@ -238,7 +358,10 @@ export default {
                 this.showModal=true;
                 //
                 axios
-                    .post("/api/correlation", this.variables)
+                    .post("/api/Regression",{
+                        "action":"correlation",
+                        "dataList":this.variables
+                    })
                     .then(response => {
                         console.log(response.data);
                         if(response.data.statu=="success")
@@ -291,11 +414,10 @@ export default {
                 this.showModal=true;
                 //
                 axios
-                    .post("/api/linearRegression", axiosData
-
-                        // "covariates": this.covariates,
-                        // "dependent_variable": this.dependent_variable
-                    )
+                    .post("/api/Regression",{
+                        "action":"linearRegression",
+                        "dataList":axiosData
+                    })
                     .then(response => {
                         console.log(response.data);
                         if(response.data.statu=="success")
@@ -355,7 +477,10 @@ export default {
                 this.showModal=true;
                 //
                 axios
-                    .post("/api/logisticRegression", axiosData)
+                    .post("/api/Regression",{
+                        "action":"logisticRegression",
+                        "dataList":axiosData
+                    })
                     .then(response => {
                         console.log(response.data);
                         if(response.data.statu=="success")
@@ -409,11 +534,10 @@ export default {
                 this.showModal=true;
                 //
                 axios
-                    .post("/api/poissonRegression", axiosData
-
-                        // "covariates": this.covariates,
-                        // "dependent_variable": this.dependent_variable
-                    )
+                    .post("/api/Regression",{
+                        "action":"poissonRegression",
+                        "dataList":axiosData
+                    })
                     .then(response => {
                         console.log(response.data);
                         if(response.data.statu=="success")

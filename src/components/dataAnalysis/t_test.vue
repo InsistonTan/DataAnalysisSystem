@@ -7,6 +7,9 @@
             <b v-if="method=='IndependentSamplesT-Test'">独立样本T检验(Independent Samples T-Test)</b>
             <b v-else-if="method=='PairedSamplesT-Test'">配对样本T检验(Paired Samples T-Test)</b>
             <b v-else-if="method=='OneSampleT-Test'">单样本T检验(One Sample T-Test)</b>
+            <b v-else-if="method=='BayesIndependentSamplesT-Test'">贝叶斯独立样本T检验(Bayesian Independent Samples T-Test)</b>
+            <b v-else-if="method=='BayesPairedSamplesT-Test'">贝叶斯配对样本T检验(Bayesian Paired Samples T-Test)</b>
+            <b v-else-if="method=='BayesOneSampleT-Test'">贝叶斯单样本T检验(Bayesian One Sample T-Test)</b>
         </div>
 
         <!-- 独立样本T检验的界面 -->
@@ -107,6 +110,134 @@
             </div>
         </div>
 
+        <!-- 贝叶斯独立样本T检验的界面 -->
+        <div v-else-if="method=='BayesIndependentSamplesT-Test'">
+            <!-- 左边选择变量的div -->
+            <div id="select-div">
+                <div v-for="item in data" :class="{'selected':selected_head==item.head}" @click="selectItem(item)" class="select-var" :key="item.head">
+                    {{item.head}}
+                </div>
+            </div>
+            <!-- 中间的按钮div -->
+            <div id="mid-btn">
+                <div @click="selectDenpendent" class="select-btn-div" title="选择为分组变量">
+                    <img class="btn-img" src="../../assets/select.png" alt="select">
+                </div>
+                <div @click="selectCovariate" class="select-btn-div" style="margin-top:60px;" title="选择为变量">
+                    <img class="btn-img" src="../../assets/select.png" alt="select">
+                </div>
+            </div>
+            <!-- 右边已经选择的变量div -->
+            <div id="show-selected-div">
+                <div>
+                    <div>分组变量(Grouping Variable)</div>
+                    <div id="Depent-Var-div">
+                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="点击移除">
+                            {{dependent_variable.head}}
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:15px;">
+                    <div>变量(Variables)</div>
+                    <div id="Covar-div" style="height:150px;">
+                        <div v-if="covariates.length>0" @click="deleteCovar(item)" class="depent-var" v-for="item in covariates" :key="item.head" title="点击移除">
+                            {{item.head}}
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:5px;">
+                    <div>rscale</div>
+                    <div>
+                        <select v-model="rscale" class="form-control">
+                            <option value="medium">medium(√2/2)</option>
+                            <option value="wide">wide(1)</option>
+                            <option value="ultrawide">ultrawide(√2)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 贝叶斯配对样本T检验的界面 -->
+        <div v-else-if="method=='BayesPairedSamplesT-Test'">
+            <!-- 左边选择变量的div -->
+            <div id="select-div">
+                <div :class="{'selected':selected_head==item.head}" @click="selectItem(item)" class="select-var" v-for="item in data" :key="item.head">
+                    {{item.head}}
+                </div>
+            </div>
+            <!-- 中间的按钮div -->
+            <div id="mid-btn">
+                <div @click="selectVariable" class="select-btn-div" title="选择为变量">
+                    <img class="btn-img" src="../../assets/select.png" alt="select">
+                </div>
+            </div>
+            <!-- 右边已经选择的变量div -->
+            <div id="show-selected-div">
+                <div>
+                    <div>变量(Variables)(按序两两配对)</div>
+                    <div id="Variable-div" style="height:200px;">
+                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="点击移除">
+                            {{item.head}}
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:5px;">
+                    <div>rscale</div>
+                    <div>
+                        <select v-model="rscale" class="form-control">
+                            <option value="medium">medium(√2/2)</option>
+                            <option value="wide">wide(1)</option>
+                            <option value="ultrawide">ultrawide(√2)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 贝叶斯单样本T检验的界面 -->
+        <div v-else-if="method=='BayesOneSampleT-Test'">
+            <!-- 左边选择变量的div -->
+            <div id="select-div">
+                <div :class="{'selected':selected_head==item.head}" @click="selectItem(item)" class="select-var" v-for="item in data" :key="item.head">
+                    {{item.head}}
+                </div>
+            </div>
+            <!-- 中间的按钮div -->
+            <div id="mid-btn">
+                <div @click="selectVariable" class="select-btn-div" style="margin-top:90px;" title="选择为变量">
+                    <img class="btn-img" src="../../assets/select.png" alt="select">
+                </div>
+            </div>
+            <!-- 右边已经选择的变量div -->
+            <div id="show-selected-div">
+                <div>
+                    <div>测试值(test value)</div>
+                    <div>
+                        <input id="test_value" type="number" style="width:100%;border:none;padding:4px;border-radius:4px;" value="0">
+                    </div>
+                </div>
+                <div style="margin-top:10px;">
+                    <div>变量(Variables)</div>
+                    <div id="Variable-div" style="height:160px;">
+                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="点击移除">
+                            {{item.head}}
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:5px;">
+                    <div>rscale</div>
+                    <div>
+                        <select v-model="rscale" class="form-control">
+                            <option value="medium">medium(√2/2)</option>
+                            <option value="wide">wide(1)</option>
+                            <option value="ultrawide">ultrawide(√2)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <hr style="margin-top:310px;">
         <!-- 确定按钮 -->
         <div style="width:100%;">
@@ -139,7 +270,27 @@
                 <ShowResult v-if="result!=null&&result!=undefined" :result="result" :method="method" ></ShowResult>
             </div>
         </div>
-        
+        <!-- 贝叶斯独立样本T检验的结果 -->
+        <div v-if="method=='BayesIndependentSamplesT-Test'">
+            <div><h5><b>Bayesian Independent Samples T-Test</b></h5></div>
+            <div v-if="result!=null">
+                <ShowResult v-if="result!=null&&result!=undefined" :result="result" :method="method" ></ShowResult>
+            </div>
+        </div>
+        <!-- 贝叶斯配对样本T检验的结果 -->
+        <div v-else-if="method=='BayesPairedSamplesT-Test'">
+            <div><h5><b>Bayesian Paired Samples T-Test</b></h5></div>
+            <div v-if="result!=null">
+                <ShowResult v-if="result!=null&&result!=undefined" :result="result" :method="method" ></ShowResult>
+            </div>
+        </div>
+        <!-- 贝叶斯单个样本T检验的结果 -->
+        <div v-else-if="method=='BayesOneSampleT-Test'">
+            <div><h5><b>Bayesian One Sample T-Test</b></h5></div>
+            <div v-if="result!=null">
+                <ShowResult v-if="result!=null&&result!=undefined" :result="result" :method="method" ></ShowResult>
+            </div>
+        </div>
     </div>
     <!-- 消息框 -->
     <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
@@ -169,6 +320,7 @@ export default {
             variables:[],
             result: null,
             showModal:false,
+            rscale:"medium",
         }
     },
     mounted() {
@@ -183,8 +335,164 @@ export default {
                 this.pairedSamplesT();
             else if (this.method == "OneSampleT-Test")
                 this.oneSamplesT();
+            else if (this.method == "BayesIndependentSamplesT-Test")
+                this.bayesIndependentSamplesT();
+            else if (this.method == "BayesPairedSamplesT-Test")
+                this.bayesPairedSamplesT();
+            else if (this.method == "BayesOneSampleT-Test")
+                this.bayesOneSamplesT();
         },
-        
+        //贝叶斯单样本T检验
+        bayesOneSamplesT() {
+            //console.log("confirm to One Sample T-Test");
+            if (this.variables.length > 0) {
+                //console.log("One Sample T-Test");
+                //检查变量的数据是否都是数字
+                for (var i = 0; i < this.variables.length; i++) {
+                    if (this.check_List_isAllNum(this.variables[i].data) == false) {
+                        alert("变量"+this.variables[i].head+"中数据存在非数字，请检查！");
+                        return;
+                    }
+                }
+                var test_value=$("#test_value").val();
+                if (test_value==""||parseFloat(test_value).toString() == "NaN"){
+                    alert("test value 不是数字，请检查！");
+                    return;
+                }
+                //
+                this.showModal=true;
+                //
+                axios
+                    .post("/api/T-test", {
+                        "action":"bayesOneSample",
+                        "dataList":this.variables,
+                        "singleData":test_value,
+                        "singleStr":this.rscale
+                    })
+                    .then(response => {
+                        console.log(response.data);
+                        if(response.data.statu=="success")
+                            this.result = response.data;
+                        else
+                            alert(response.data.msg);
+                        //
+                        this.showModal=false;
+                    })
+                    .catch(error => {
+                        alert("服务器出现了点小问题...");
+                        console.log(error);
+                        //
+                        this.showModal=false;
+                    })
+
+            } else alert("参数选择错误,请检查!");
+        },
+        //贝叶斯独立样本T检验
+        bayesIndependentSamplesT() {
+            if (this.dependent_variable != null && this.covariates.length > 0) {
+                //检查因变量和协变量的数据是否都是数字，并且检查数据个数是否一致
+                if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
+                    alert("分组变量的数据存在非数字，请检查！");
+                    return;
+                }
+                for (var i = 0; i < this.covariates.length; i++) {
+                        if (this.check_List_isAllNum(this.covariates[i].data) == false) {
+                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            return;
+                        }
+                }
+
+                //处理数据，axiosData用于传到后台
+                var axiosData = new Array();
+                this.dependent_variable.type = "groupVar"; //设置类型为分组变量
+                axiosData.push(this.dependent_variable); //添加到axiosData
+                for (var i = 0; i < this.covariates.length; i++) {
+                    this.covariates[i].type = "variable"; //设置类型为变量
+                    axiosData.push(this.covariates[i]); //添加
+                }
+
+                //
+                this.showModal=true;
+                //
+                axios
+                    .post("/api/T-test", {
+                        "action":"bayesIndependentSample",
+                        "dataList":axiosData,
+                        "singleStr":this.rscale
+                    })
+                    .then(response => {
+                        console.log(response.data);
+                        if(response.data.statu=="success")
+                            this.result = response.data;
+                        else
+                            alert(response.data.msg);
+                        //
+                        this.showModal=false;
+                    })
+                    .catch(error => {
+                        alert("服务器出现了点小问题...");
+                        console.log(error);
+                        //
+                        this.showModal=false;
+                    })
+
+            } else alert("参数选择错误,请检查!");
+        },
+        //贝叶斯配对样本T检验
+        bayesPairedSamplesT() {
+            if (this.variables.length > 0) {
+                if(this.variables.length%2!=0){
+                    alert("选择了奇数个变量，无法按序完成两两配对，请检查！");
+                    return;
+                }
+                //检查两两配对的变量的数据是否都是数字，并且检查数据个数是否一致
+                for (var i = 0; i < this.variables.length; i+=2) {
+                    if (this.variables[i].data.length!=this.variables[i+1].data.length) {
+                        var index=(i/2.0)+1;
+                        alert("第"+index+"对变量的数据个数不一致，请检查！");
+                        return;
+                    } 
+                    if (this.check_List_isAllNum(this.variables[i].data) == false) {
+                        alert("变量"+this.variables[i].head+"中数据存在非数字，请检查！");
+                        return;
+                    }
+                    if (this.check_List_isAllNum(this.variables[i+1].data) == false) {
+                        alert("变量"+this.variables[i+1].head+"中数据存在非数字，请检查！");
+                        return;
+                    }
+                    if(this.variables[i].head==this.variables[i+1].head){
+                        alert("变量"+this.variables[i].head+"不能与自身进行配对，请检查！");
+                        return;
+                    }
+                }
+
+                //
+                this.showModal=true;
+                //
+                axios
+                    .post("/api/T-test", {
+                        "action":"bayesPairedSample",
+                        "dataList":this.variables,
+                        "singleStr":this.rscale
+                    })
+                    .then(response => {
+                        console.log(response.data);
+                        if(response.data.statu=="success")
+                            this.result = response.data;
+                        else
+                            alert(response.data.msg);
+                        //
+                        this.showModal=false;
+                    })
+                    .catch(error => {
+                        alert("服务器出现了点小问题...");
+                        console.log(error);
+                        //
+                        this.showModal=false;
+                    })
+
+            } else alert("参数选择错误,请检查!");
+        },
         //单样本T检验
         oneSamplesT() {
             console.log("confirm to One Sample T-Test");
@@ -251,6 +559,10 @@ export default {
                     }
                     if (this.check_List_isAllNum(this.variables[i+1].data) == false) {
                         alert("变量"+this.variables[i+1].head+"中数据存在非数字，请检查！");
+                        return;
+                    }
+                    if(this.variables[i].head==this.variables[i+1].head){
+                        alert("变量"+this.variables[i].head+"不能与自身进行配对，请检查！");
                         return;
                     }
                 }
@@ -337,7 +649,7 @@ export default {
         //选择该项为变量 variales
         selectVariable() {
             if (this.selected_item != null) {
-                if(this.method=="PairedSamplesT-Test"){
+                if(this.method=="PairedSamplesT-Test"||this.method=="BayesPairedSamplesT-Test"){
                     this.variables.push(this.selected_item);
                     this.selected_item = null;
                     this.selected_head= null;
@@ -357,7 +669,7 @@ export default {
         },
         //移除已选择的变量 variale
         deleteVariable(item) {
-            if(this.method=="PairedSamplesT-Test"){
+            if(this.method=="PairedSamplesT-Test"||this.method=="BayesPairedSamplesT-Test"){
                 //获取这个item的位置
                 var index = this.variables.indexOf(item);
                 //从covariates移除这个item

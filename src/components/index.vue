@@ -40,6 +40,16 @@
                 <router-link :to="{path:'/T_test/',query:{'method':'OneSampleT-Test'}}" class="dropdown-item">
                     单样本T检验(One Sample T-Test)
                 </router-link>
+                <hr>
+                <router-link :to="{path:'/T_test/',query:{'method':'BayesIndependentSamplesT-Test'}}" class="dropdown-item">
+                    贝叶斯独立样本T检验(Bayesian Independent Samples T-Test)
+                </router-link>
+                <router-link :to="{path:'/T_test/',query:{'method':'BayesPairedSamplesT-Test'}}" class="dropdown-item">
+                    贝叶斯配对样本T检验(Bayesian Paired Samples T-Test)
+                </router-link>
+                <router-link :to="{path:'/T_test/',query:{'method':'BayesOneSampleT-Test'}}" class="dropdown-item">
+                    贝叶斯单样本T检验(Bayesian One Sample T-Test)
+                </router-link>
             </div>
         </div>
         <!-- 回归分析 -->
@@ -50,11 +60,9 @@
                 回归分析
             </div>
             <div class="dropdown-menu">
-                <!-- <a class="dropdown-item" href="#">线性回归(Linear Regression)</a> -->
                 <router-link :to="{path:'/Regression/',query:{'method':'Correlation'}}" class="dropdown-item">
                     相关性(Correlation)
                 </router-link>
-                <hr>
                 <router-link :to="{path:'/Regression/',query:{'method':'LinearRegression'}}" class="dropdown-item">
                     线性回归(Linear Regression)
                 </router-link>
@@ -64,9 +72,13 @@
                 <router-link :to="{path:'/Regression/',query:{'method':'PoissonRegression'}}" class="dropdown-item">
                     泊松回归(Poisson Regression)
                 </router-link>
-                <!-- <hr style="margin-top:5px;margin-bottom:5px;">
-                <a class="dropdown-item" href="#">贝叶斯相关性(Bayesian Correlation)</a>
-                <a class="dropdown-item" href="#">贝叶斯线性回归(Bayesian Linear Regression)</a> -->
+                <hr>
+                <router-link :to="{path:'/Regression/',query:{'method':'BayesCorrelation'}}" class="dropdown-item">
+                    贝叶斯相关性(Bayesian Correlation)
+                </router-link>
+                <router-link :to="{path:'/Regression/',query:{'method':'BayesLinearRegression'}}" class="dropdown-item">
+                    贝叶斯线性回归(Bayesian Linear Regression)
+                </router-link>
             </div>
         </div>
         <!-- 方差分析 -->
@@ -100,11 +112,9 @@
                 频率分析
             </div>
             <div class="dropdown-menu">
-                <!-- <a class="dropdown-item" href="#">线性回归(Linear Regression)</a> -->
                 <router-link :to="{path:'/Frequencies/',query:{'method':'BinomialTest'}}" class="dropdown-item">
                     二项检验(Binomial Test)
                 </router-link>
-                <hr>
                 <!-- <router-link :to="{path:'/Analysis',query:{'method':'MultinomialTest'}}" class="dropdown-item">
                     多项检验(Multinomial Test)
                 </router-link>
@@ -114,6 +124,10 @@
                 </router-link>
                 <router-link :to="{path:'/Frequencies/',query:{'method':'Log-LinearRegression'}}" class="dropdown-item">
                     对数线性回归(Log-Linear Regression)
+                </router-link>
+                <hr>
+                <router-link :to="{path:'/Frequencies/',query:{'method':'BayesContingencyTables'}}" class="dropdown-item">
+                    贝叶斯列联表(Bayesian Contingency Tables)
                 </router-link>
             </div>
         </div>
@@ -251,7 +265,7 @@ export default {
     },
     beforeRouteLeave(to, from, next) {
         GlobalData.setData(this.getData());
-        console.log(GlobalData.data);
+        //console.log(GlobalData.data);
         next();
     },
     watch: {

@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/index'
-import Descriptives from '@/components/descriptives/Descriptives'
-import T_test from '@/components/t_test/t_test'
-import Regression from '@/components/regression/regression'
-import Anova from '@/components/anova/anova'
-import Frequencies from '@/components/frequencies/frequencies'
-import Factor from '@/components/factor/factor'
+import Descriptives from '@/components/dataAnalysis/descriptives'
+import T_test from '@/components/dataAnalysis/t_test'
+import Regression from '@/components/dataAnalysis/regression'
+import Anova from '@/components/dataAnalysis/anova'
+import Frequencies from '@/components/dataAnalysis/frequencies'
+import Factor from '@/components/dataAnalysis/factor'
 Vue.use(Router)
 
 export default new Router({

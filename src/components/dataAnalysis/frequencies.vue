@@ -7,6 +7,7 @@
             <b v-if="method=='BinomialTest'">二项检验(Binomial Test)</b>
             <b v-else-if="method=='ContingencyTables'">列联表(Contingency Tables)</b>
             <b v-else-if="method=='Log-LinearRegression'">对数线性回归(Log-Linear Regression)</b>
+            <b v-else-if="method=='BayesContingencyTables'">贝叶斯列联表(Bayesian Contingency Tables)</b>
         </div>
 
         <!-- 对数线性回归的界面 -->
@@ -118,6 +119,60 @@
             </div>
         </div>
 
+        <!-- 贝叶斯列联表的界面 -->
+        <div v-else-if="method=='BayesContingencyTables'">
+            <!-- 左边选择变量的div -->
+            <div id="select-div">
+                <div v-for="item in data" :class="{'selected':selected_head==item.head}" @click="selectItem(item)" class="select-var" :key="item.head">
+                    {{item.head}}
+                </div>
+            </div>
+            <!-- 中间的按钮div -->
+            <div id="mid-btn">
+                <div @click="selectRow" class="select-btn-div" title="选择为行变量">
+                    <img class="btn-img" src="../../assets/select.png" alt="select">
+                </div>
+                <div @click="selectCol" class="select-btn-div" style="margin-top:45px;" title="选择为列变量">
+                    <img class="btn-img" src="../../assets/select.png" alt="select">
+                </div>
+            </div>
+            <!-- 右边已经选择的变量div -->
+            <div id="show-selected-div">
+                <div>
+                    <div>行变量(Row)</div>
+                    <div id="Depent-Var-div">
+                        <div v-if="row_var!=null" @click="deleteRow" class="depent-var" title="点击移除">
+                            {{row_var.head}}
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:10px;">
+                    <div>列变量(Column)</div>
+                    <div id="Depent-Var-div">
+                        <div v-if="col_var!=null" @click="deleteCol" class="depent-var" title="点击移除">
+                            {{col_var.head}}
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:10px;">
+                    <div>SampleType:</div>
+                    <select v-model="sampleType" class="form-control">
+                        <option value="poisson">Poisson</option>
+                        <option value="jointMulti">Joint Multinomial</option>
+                        <option value="indepMulti">Independent Multinomial</option>
+                        <option value="hypergeom">Hypergeometric(2x2 only)</option>
+                    </select>
+                </div>
+                <div v-if="sampleType=='indepMulti'" style="margin-top:10px;">
+                    <div>Fixed Margin:</div>
+                    <select v-model="fixedMargin" class="form-control">
+                        <option value="cols">cols fixed</option>
+                        <option value="rows">rows fixed</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <hr style="margin-top:310px;">
         <!-- 确定按钮 -->
         <div style="width:100%;">
@@ -153,6 +208,13 @@
                 <ShowResult v-if="result!=null&&result!=undefined" :row_var="row_var" :col_var="col_var" :result="result" :method="method" ></ShowResult>
             </div>
         </div>
+        <!-- 贝叶斯列联表的结果 -->
+        <div v-else-if="method=='BayesContingencyTables'">
+            <div><h5><b>Bayesian Contingency Tables</b></h5></div>
+            <div v-if="result!=null">
+                <ShowResult v-if="result!=null&&result!=undefined" :row_var="row_var" :col_var="col_var" :result="result" :method="method" ></ShowResult>
+            </div>
+        </div>
     </div>
     <!-- 消息框 -->
     <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
@@ -182,13 +244,15 @@ export default {
             col_var:null,
             covariates: [],
             variables:[],
+            sampleType:"poisson",
+            fixedMargin:"cols",
             result: null,
             formula: null,
             showModal:false,
         }
     },
     mounted() {
-        console.log(this.data);
+        //console.log(this.data);
     },
     methods: {
         //确定按钮
@@ -199,6 +263,8 @@ export default {
                 this.logLinearRegression(); 
             else if(this.method == "ContingencyTables")
                 this.contingencyTables();
+            else if(this.method == "BayesContingencyTables")
+                this.bayesContingencyTables();
         },
         //处理获得分析公式
         getFormula() {
@@ -213,6 +279,92 @@ export default {
                 
                 return str;
             }
+        },
+        //贝叶斯列联表
+        bayesContingencyTables() {
+            //console.log("confirm to ContingencyTables");
+            if (this.row_var != null && this.col_var != null) {
+                //检查类型为 hypergeom时的数据是否合法
+                if(this.sampleType=="hypergeom"){
+                    var a=null;
+                    var b=null;
+                    var illegal=false;
+                    for(var i in this.row_var.data){
+                        var temp=this.row_var.data[i];
+                        if(temp!=a&&temp!=b){
+                            if(a==null)
+                                a=temp;
+                            else if(b==null)
+                                b=temp;
+                            else
+                                illegal=true;
+                        }
+                    }
+                    console.log(a+","+b+","+illegal);
+                    
+                    if(a==null||b==null||illegal==true){
+                        alert("变量"+this.row_var.head+"中不同的数据的种类不等于2，请检查！");
+                        return;
+                    }
+                    a=null;
+                    b=null;
+                    illegal=false;
+                    for(var i in this.col_var.data){
+                        var temp=this.col_var.data[i];
+                        if(temp!=a&&temp!=b){
+                            if(a==null)
+                                a=temp;
+                            else if(b==null)
+                                b=temp;
+                            else
+                                illegal=true;
+                        }
+                    }
+                    if(a==null||b==null||illegal==true){
+                        alert("变量"+this.col_var.head+"中不同的数据的种类不等于2，请检查！");
+                        return;
+                    }
+                }
+                //console.log("ContingencyTables");
+                //检查行变量和列变量数据个数是否一致
+                if(this.row_var.data.length!=this.col_var.data.length){
+                    alert("行变量和列变量的数据个数不一致，请检查！");
+                    return;
+                }
+                //处理数据，axiosData用于传到后台
+                var axiosData = new Array();
+                var row={"head":this.row_var.head,"strData":this.row_var.data};
+                var col={"head":this.col_var.head,"strData":this.col_var.data};
+                axiosData.push(row);
+                axiosData.push(col);
+                //参数
+                var mapData={"sampleType":this.sampleType,"fixedMargin":this.fixedMargin};
+                //
+                this.showModal=true;
+                //
+                axios
+                    .post("/api/Frequencies", {
+                        "action":"bayesContingencyTables",
+                        "dataList":axiosData,
+                        "mapData":mapData
+                    })
+                    .then(response => {
+                        console.log(response.data);
+                        if(response.data.statu=="success")
+                            this.result = response.data;
+                        else
+                            alert(response.data.msg);
+                        //
+                        this.showModal=false;
+                    })
+                    .catch(error => {
+                        alert("服务器出现了点小问题...");
+                        console.log(error);
+                        //
+                        this.showModal=false;
+                    })
+
+            } else alert("参数选择错误,请检查!");
         },
         //列联表
         contingencyTables() {

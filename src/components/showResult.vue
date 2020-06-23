@@ -98,7 +98,7 @@
         <div v-else-if="method=='Correlation'">
             <div><b>相关系数可视化:</b></div>
             <div><img :src="result['covPic']" alt="相关系数图"></div>
-            <div v-if="name!='statu'" v-for="(value,name) in result">
+            <div v-if="name!='statu'&&name!='covPic'" v-for="(value,name) in result">
                 <b v-if="name=='cov'">协方差&nbsp;Covariance:</b>
                 <b v-else>{{name}}&nbsp;相关系数:</b>
                 <table class="table table-striped" style="background:rgb(235,235,235);">
@@ -113,6 +113,112 @@
                 </table>
             </div>
         </div>
+        <!-- 贝叶斯相关性的结果展示 -->
+        <div v-else-if="method=='BayesCorrelation'">
+            <div><b>Pearson'r:</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td></td>
+                    <td v-for="item in variables">{{item.head}}</td>
+                </tr>
+                <tr v-for="item in variables">
+                    <td>{{item.head}}</td>
+                    <td v-for="num in result['pearson'][item.head]">{{num}}</td>
+                </tr>
+            </table>
+            <div><b>BF(rscale=1):</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td></td>
+                    <td v-for="item in variables">{{item.head}}</td>
+                </tr>
+                <tr v-for="item in variables">
+                    <td>{{item.head}}</td>
+                    <td v-for="num in result['bf1'][item.head]">{{num}}</td>
+                </tr>
+            </table>
+            <div><b>BF(rscale=1/√(3)):</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td></td>
+                    <td v-for="item in variables">{{item.head}}</td>
+                </tr>
+                <tr v-for="item in variables">
+                    <td>{{item.head}}</td>
+                    <td v-for="num in result['bf2'][item.head]">{{num}}</td>
+                </tr>
+            </table>
+            <div><b>BF(rscale=1/3):</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td></td>
+                    <td v-for="item in variables">{{item.head}}</td>
+                </tr>
+                <tr v-for="item in variables">
+                    <td>{{item.head}}</td>
+                    <td v-for="num in result['bf3'][item.head]">{{num}}</td>
+                </tr>
+            </table>
+            <div><b>BF(rscale=1/√(27)):</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td></td>
+                    <td v-for="item in variables">{{item.head}}</td>
+                </tr>
+                <tr v-for="item in variables">
+                    <td>{{item.head}}</td>
+                    <td v-for="num in result['bf4'][item.head]">{{num}}</td>
+                </tr>
+            </table>
+        </div>
+        <!-- 贝叶斯线性回归的结果展示 -->
+        <div v-else-if="method=='BayesLinearRegression'">
+            <div>
+                <b>Coefficients:</b>
+                <br>
+                <table class="table table-striped" style="background:rgb(235,235,235);">
+                    <tr>
+                        <td></td>
+                        <td>Estimate</td>
+                        <td>Std.Error</td>
+                        <td>t_value</td>
+                        <td>Pr(>|t|)</td>
+                    </tr>
+                    <tr v-for="(value,key) in result['coefficients']">
+                        <td><b>{{key}}</b></td>
+                        <td>{{value["Estimate"]}}</td>
+                        <td>{{value["Std. Error"]}}</td>
+                        <td>{{value["t value"]}}</td>
+                        <td>{{value["Pr(>|t|)"]}}</td>
+                    </tr>
+                </table>
+                <b>Deviance Residuals:</b>
+                <table class="table table-striped" style="background:rgb(235,235,235);">
+                    <tr>
+                        <td>Min</td>
+                        <td>1Q</td>
+                        <td>Median</td>
+                        <td>3Q</td>
+                        <td>Max</td>
+                    </tr>
+                    <tr>
+                        <td>{{result["deviance.resid"]["Min"]}}</td>
+                        <td>{{result["deviance.resid"]["1Q"]}}</td>
+                        <td>{{result["deviance.resid"]["Median"]}}</td>
+                        <td>{{result["deviance.resid"]["3Q"]}}</td>
+                        <td>{{result["deviance.resid"]["Max"]}}</td>
+                    </tr>
+                </table>
+                <b>Null deviance:&nbsp;</b>{{result["Null deviance"]}}
+                <br>
+                <b>Residual deviance:&nbsp;</b>{{result["Residual deviance"]}}
+                <br>
+                <b>AIC:&nbsp;</b>{{result["AIC"]}}
+                <br>
+                <b>Number of Fisher Scoring iterations:&nbsp;</b>{{result["iter"]}}
+            </div>
+        </div>
+        <!-- ----------------------------------------------------------------------------------------------------- -->
         <!-- 描述性统计的结果展示 -->
         <div v-else-if="method=='DescriptiveStatistics'">
             <div><b>Descriptives:</b></div>
@@ -245,6 +351,7 @@
                 </tr>
             </table>
         </div>
+        <!-- ----------------------------------------------------------------------------------------------------- -->
         <!-- 独立样本T检验的结果 -->
         <div v-else-if="method=='IndependentSamplesT-Test'">
             <div><b>result:</b></div>
@@ -329,6 +436,55 @@
                 </tr>
             </table>
         </div>
+        <!-- 贝叶斯独立样本T检验的结果 -->
+        <div v-else-if="method=='BayesIndependentSamplesT-Test'">
+            <div><b>result:</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td></td>
+                    <td>bf</td>
+                    <td>error</td>
+                </tr>
+                <tr v-if="key!='statu'" v-for="(value,key) in result">
+                    <td>{{key}}</td>
+                    <td>{{value['bf']}}</td>
+                    <td>{{value['error']}}</td>
+                </tr>
+            </table>
+        </div>
+        <!-- 贝叶斯配对样本T检验的结果 -->
+        <div v-else-if="method=='BayesPairedSamplesT-Test'">
+            <div><b>result:</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td></td>
+                    <td>bf</td>
+                    <td>error</td>
+                </tr>
+                <tr v-if="key!='statu'" v-for="(value,key) in result">
+                    <td>{{key}}</td>
+                    <td>{{value['bf']}}</td>
+                    <td>{{value['error']}}</td>
+                </tr>
+            </table>
+        </div>
+        <!-- 贝叶斯单个样本T检验的结果 -->
+        <div v-else-if="method=='BayesOneSampleT-Test'">
+            <div><b>result:</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td></td>
+                    <td>bf</td>
+                    <td>error</td>
+                </tr>
+                <tr v-if="key!='statu'" v-for="(value,key) in result">
+                    <td>{{key}}</td>
+                    <td>{{value['bf']}}</td>
+                    <td>{{value['error']}}</td>
+                </tr>
+            </table>
+        </div>
+        <!-- ----------------------------------------------------------------------------------------------------- -->
         <!-- 方差分析的结果 -->
         <div v-else-if="method=='ANOVA'">
             <div><b>result:</b></div>
@@ -397,6 +553,7 @@
                 </tr>
             </table>
         </div>
+        <!-- ----------------------------------------------------------------------------------------------------- -->
         <!-- 二项检验的结果 -->
         <div v-else-if="method=='BinomialTest'">
             <div v-if="key!='statu'" v-for="(value,key) in result">
@@ -522,6 +679,37 @@
                 </tr>
             </table>
         </div>
+        <!-- 贝叶斯列联表的结果 -->
+        <div v-else-if="method=='BayesContingencyTables'">
+            <div><b>Contingency Table:</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td><b>{{row_var.head}}</b>&nbsp;\&nbsp;<b>{{col_var.head}}</b></td>
+                    <td v-for="name in result['frequency'][col_var.head]">
+                        {{name}}
+                    </td>
+                    <td>Total</td>
+                </tr>
+                <tr v-for="(value,key) in result['frequency'][row_var.head]">
+                    <td>{{key}}</td>
+                    <td v-for="num in value">
+                        {{num}}
+                    </td>
+                </tr>
+            </table>
+            <div><b>Bayesian Contingency Table Tests:</b></div>
+            <table class="table table-striped" style="background:rgb(235,235,235);">
+                <tr>
+                    <td>bf</td>
+                    <td>error</td>
+                </tr>
+                <tr>
+                    <td>{{result['bf']}}</td>
+                    <td>{{result['error']}}</td>
+                </tr>
+            </table>
+        </div>
+        <!-- ----------------------------------------------------------------------------------------------------- -->
         <!-- 主成分分析的结果 -->
         <div v-else-if="method=='PrincipalComponentAnalysis'">
             <div><b>平行分析碎石图:</b></div>
@@ -566,7 +754,7 @@
             </table>
         </div>
         <!-- 探索性因子分析的结果 -->
-        <div v-if="method=='ExploratoryFactorAnalysis'">
+        <div v-else-if="method=='ExploratoryFactorAnalysis'">
             <div><b>平行分析碎石图:</b></div>
             <div><img :src="result['parallelPic']" alt="平行分析碎石图"></div>
             <div><b>Loadings:</b></div>
