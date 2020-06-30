@@ -4,10 +4,10 @@
     <div id="main-left-div">
         <!-- title -->
         <div style="padding-bottom: 20px;">
-            <b v-if="method=='BinomialTest'">二项检验(Binomial Test)</b>
-            <b v-else-if="method=='ContingencyTables'">列联表(Contingency Tables)</b>
-            <b v-else-if="method=='Log-LinearRegression'">对数线性回归(Log-Linear Regression)</b>
-            <b v-else-if="method=='BayesContingencyTables'">贝叶斯列联表(Bayesian Contingency Tables)</b>
+            <b v-if="method=='BinomialTest'">Binomial Test</b>
+            <b v-else-if="method=='ContingencyTables'">Contingency Tables</b>
+            <b v-else-if="method=='Log-LinearRegression'">Log-Linear Regression</b>
+            <b v-else-if="method=='BayesContingencyTables'">Bayesian Contingency Tables</b>
         </div>
 
         <!-- 对数线性回归的界面 -->
@@ -20,27 +20,27 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectDenpendent" class="select-btn-div" title="选择为因变量">
+                <div @click="selectDenpendent" class="select-btn-div" title="select Denpendent">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
-                <div @click="selectCovariate" class="select-btn-div" style="margin-top:60px;" title="选择为协变量">
+                <div @click="selectCovariate" class="select-btn-div" style="margin-top:60px;" title="select Covariate">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>因变量(Dependent Variable)</div>
+                    <div>Dependent Variable</div>
                     <div id="Depent-Var-div">
-                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="点击移除">
+                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="remove">
                             {{dependent_variable.head}}
                         </div>
                     </div>
                 </div>
                 <div style="margin-top:30px;">
-                    <div>协变量(Covariates)</div>
+                    <div>Covariates</div>
                     <div id="Covar-div">
-                        <div v-if="covariates.length>0" @click="deleteCovar(item)" class="depent-var" v-for="item in covariates" :key="item.head" title="点击移除">
+                        <div v-if="covariates.length>0" @click="deleteCovar(item)" class="depent-var" v-for="item in covariates" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -58,22 +58,22 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectVariable" class="select-btn-div" style="margin-top:90px;" title="选择为变量">
+                <div @click="selectVariable" class="select-btn-div" style="margin-top:90px;" title="select Variable">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>测试值(test value)</div>
+                    <div>Test value</div>
                     <div>
                         <input id="test_value" type="number" style="width:100%;border:none;padding:4px;border-radius:4px;" value="0.5">
                     </div>
                 </div>
                 <div style="margin-top:20px;">
-                    <div>变量(Variables)</div>
+                    <div>Variables</div>
                     <div id="Variable-div" style="height:210px;">
-                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="点击移除">
+                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -91,27 +91,27 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectRow" class="select-btn-div" title="选择为行变量">
+                <div @click="selectRow" class="select-btn-div" title="select Row">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
-                <div @click="selectCol" class="select-btn-div" style="margin-top:85px;" title="选择为列变量">
+                <div @click="selectCol" class="select-btn-div" style="margin-top:85px;" title="select Col">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>行变量(Row)</div>
+                    <div>Row</div>
                     <div id="Depent-Var-div">
-                        <div v-if="row_var!=null" @click="deleteRow" class="depent-var" title="点击移除">
+                        <div v-if="row_var!=null" @click="deleteRow" class="depent-var" title="remove">
                             {{row_var.head}}
                         </div>
                     </div>
                 </div>
                 <div style="margin-top:50px;">
-                    <div>列变量(Column)</div>
+                    <div>Column</div>
                     <div id="Depent-Var-div">
-                        <div v-if="col_var!=null" @click="deleteCol" class="depent-var" title="点击移除">
+                        <div v-if="col_var!=null" @click="deleteCol" class="depent-var" title="remove">
                             {{col_var.head}}
                         </div>
                     </div>
@@ -129,27 +129,27 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectRow" class="select-btn-div" title="选择为行变量">
+                <div @click="selectRow" class="select-btn-div" title="select Row">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
-                <div @click="selectCol" class="select-btn-div" style="margin-top:45px;" title="选择为列变量">
+                <div @click="selectCol" class="select-btn-div" style="margin-top:45px;" title="select Col">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>行变量(Row)</div>
+                    <div>Row</div>
                     <div id="Depent-Var-div">
-                        <div v-if="row_var!=null" @click="deleteRow" class="depent-var" title="点击移除">
+                        <div v-if="row_var!=null" @click="deleteRow" class="depent-var" title="remove">
                             {{row_var.head}}
                         </div>
                     </div>
                 </div>
                 <div style="margin-top:10px;">
-                    <div>列变量(Column)</div>
+                    <div>Column</div>
                     <div id="Depent-Var-div">
-                        <div v-if="col_var!=null" @click="deleteCol" class="depent-var" title="点击移除">
+                        <div v-if="col_var!=null" @click="deleteCol" class="depent-var" title="remove">
                             {{col_var.head}}
                         </div>
                     </div>
@@ -217,7 +217,7 @@
         </div>
     </div>
     <!-- 消息框 -->
-    <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
+    <MyModal v-if="showModal==true" :show="showModal" title="Processing data"></MyModal>
 </div>
 </template>
 
@@ -328,7 +328,7 @@ export default {
                 //console.log("ContingencyTables");
                 //检查行变量和列变量数据个数是否一致
                 if(this.row_var.data.length!=this.col_var.data.length){
-                    alert("行变量和列变量的数据个数不一致，请检查！");
+                    alert("Row variable and column variable have different numbers of data, please check！");
                     return;
                 }
                 //处理数据，axiosData用于传到后台
@@ -358,13 +358,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //列联表
         contingencyTables() {
@@ -373,7 +373,7 @@ export default {
                 console.log("ContingencyTables");
                 //检查行变量和列变量数据个数是否一致
                 if(this.row_var.data.length!=this.col_var.data.length){
-                    alert("行变量和列变量的数据个数不一致，请检查！");
+                    alert("Row variable and column variable have different numbers of data, please check！");
                     return;
                 }
                 //处理数据，axiosData用于传到后台
@@ -400,13 +400,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //对数线性回归分析
         logLinearRegression() {
@@ -414,21 +414,21 @@ export default {
             if (this.dependent_variable != null && this.covariates.length > 0) {
                 console.log("logLinearRegression");
                 if(this.covariates.length<2){
-                    alert("协变量个数至少要2个，请检查！");
+                    alert("The number of covariates must be at least 2, please check!");
                     return;
                 }
                 //检查因变量和协变量的数据是否都是数字，并且检查数据个数是否一致
                 if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
-                    alert("因变量的数据存在非数字，请检查！");
+                    alert("The data of the dependent variable is non-numeric, please check!");
                     return;
                 }
                 for (var i = 0; i < this.covariates.length; i++) {
                     if (this.dependent_variable.data.length != this.covariates[i].data.length) {
-                        alert("已选择的项的数据个数不一致，请检查！");
+                        alert("The number of data of the selected items is inconsistent, please check!");
                         return;
                     } else {
                         if (this.check_List_isAllNum(this.covariates[i].data) == false) {
-                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            alert("The data in the variable:"+this.covariates[i].head+" is non-numeric, please check！");
                             return;
                         }
                     }
@@ -460,13 +460,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //二项检验 binomial
         binomial() {
@@ -476,7 +476,7 @@ export default {
                 //检查测试值
                 var test_value=$("#test_value").val();
                 if(test_value==""||test_value==undefined||test_value==null){
-                    alert("测试值为空，请检查！");
+                    alert("The test value is empty, please check!");
                     return;
                 }
                 //处理数据，axiosData用于传到后台
@@ -529,13 +529,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
 
         //选择该项为变量 variales

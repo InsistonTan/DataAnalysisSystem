@@ -2,26 +2,25 @@
     <div>
         <div v-if="show==true" class="myModal">
             <div class="header">
-                <button type="button" @click="closeLogin" class="btn-close" title="点击关闭">&times;</button>
+                <button type="button" @click="closeLogin" class="btn-close" title="close">&times;</button>
                 <div style="text-align:center;">
                     <h5>
-                        <span class="text-muted">用户登陆</span>
+                        <span class="text-muted">Sign in</span>
                     </h5>
                 </div>
-                <div>用户名:</div>
-                <input type="text" class="form-control" v-model="username" placeholder="请输入用户名">
-                <div style="margin-top:5px;">密码:</div>
-                <input type="password" class="form-control" v-model="password" placeholder="请输入密码">
+                <div>Username:</div>
+                <input type="text" class="form-control" v-model="username" placeholder="enter user name">
+                <div style="margin-top:5px;">Password:</div>
+                <input type="password" class="form-control" v-model="password" placeholder="enter password">
                 <VerificationCode v-if="showCode==true" @getCode="getVerCode($event)" width="70" height="35"></VerificationCode>
-                <input type="text" class="form-control" v-model="input_code" style="width:75px;height:30px;" placeholder="验证码">
+                <input type="text" class="form-control" v-model="input_code" style="width:85px;height:30px;" placeholder="captcha">
                 <div class="text-info" style="font-size:14px;">{{statu}}</div>
                 <div style="margin-top:10px;">
-                    <button @click="login" type="button" class="btn btn-success">登陆</button>
-                    <button @click="register" type="button" class="btn btn-warning" style="margin-left:10px;">注册</button>
+                    <button @click="login" type="button" class="btn btn-success">sign in</button>
+                    <button @click="register" type="button" class="btn btn-warning" style="margin-left:10px;">sign up</button>
                 </div>
             </div>
         </div>
-        </transition>
         <transition name="over">
             <div v-if="show==true" class="over"></div>
         </transition>     
@@ -52,21 +51,21 @@ export default {
         //登陆
         login(){
             if(this.username==""||this.username==null){
-                this.statu="用户名为空，请检查...";
+                this.statu="Username is empty, please check...";
                 return;
             }
             if(this.password==""||this.password==null){
-                this.statu="密码为空，请检查...";
+                this.statu="Password is empty, please check...";
                 return;
             }
             if(this.input_code!=this.verCode){
-                this.statu="验证码错误";
+                this.statu="Verification code error";
                 this.refleshCode();
                 this.input_code=null;
                 return;
             }
             this.input_code=null;
-            this.statu="正在登陆...";
+            this.statu="sign in...";
             //
             this.refleshCode();
             //
@@ -86,40 +85,40 @@ export default {
                             this.$emit("closeLogin");
                         }
                         else{
-                            this.statu="登陆成功，但获取信息失败...";
+                            this.statu="Successful sign in, but failed to obtain information...";
                         }
                     }
                     else{
-                        this.statu="登陆失败:"+res.msg;
+                        this.statu="sign in failed:"+res.msg;
                     }
                 })
                 .catch(function(error){
                     console.log();
-                    alert("服务器出了点小问题...");
+                    alert("server error...");
                 })
         },
         //注册
         register(){
             if(this.username==""||this.username==null){
-                this.statu="用户名为空，请检查...";
+                this.statu="Username is empty, please check...";
                 return;
             }
             if(this.password==""||this.password==null){
-                this.statu="密码为空，请检查...";
+                this.statu="Password is empty, please check...";
                 return;
             }
             if(this.password.length<6){
-                this.statu="密码太短了，至少要6个字符...";
+                this.statu="Password is too short, at least 6 characters...";
                 return;
             }
             if(this.input_code!=this.verCode){
-                this.statu="验证码错误";
+                this.statu="Verification code error";
                 this.refleshCode();
                 this.input_code=null;
                 return;
             }
             this.input_code=null;
-            this.statu="正在注册...";
+            this.statu="sign up...";
             //
             this.refleshCode();
             //
@@ -132,15 +131,15 @@ export default {
                     var res=response.data;
                     //console.log(res);
                     if(res.statu=="success"){
-                        this.statu="注册成功！";
+                        this.statu="sign up successfully！";
                     }
                     else{
-                        this.statu="注册失败:"+res.msg;
+                        this.statu="sign up failed:"+res.msg;
                     }
                 })
                 .catch(function(error){
                     console.log();
-                    alert("服务器出了点小问题...");
+                    alert("server error...");
                 })
         },
         //刷新验证码

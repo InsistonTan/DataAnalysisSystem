@@ -4,12 +4,12 @@
     <div id="main-left-div">
         <!-- title -->
         <div style="padding-bottom: 20px;">
-            <b v-if="method=='IndependentSamplesT-Test'">独立样本T检验(Independent Samples T-Test)</b>
-            <b v-else-if="method=='PairedSamplesT-Test'">配对样本T检验(Paired Samples T-Test)</b>
-            <b v-else-if="method=='OneSampleT-Test'">单样本T检验(One Sample T-Test)</b>
-            <b v-else-if="method=='BayesIndependentSamplesT-Test'">贝叶斯独立样本T检验(Bayesian Independent Samples T-Test)</b>
-            <b v-else-if="method=='BayesPairedSamplesT-Test'">贝叶斯配对样本T检验(Bayesian Paired Samples T-Test)</b>
-            <b v-else-if="method=='BayesOneSampleT-Test'">贝叶斯单样本T检验(Bayesian One Sample T-Test)</b>
+            <b v-if="method=='IndependentSamplesT-Test'">Independent Samples T-Test</b>
+            <b v-else-if="method=='PairedSamplesT-Test'">Paired Samples T-Test</b>
+            <b v-else-if="method=='OneSampleT-Test'">One Sample T-Test</b>
+            <b v-else-if="method=='BayesIndependentSamplesT-Test'">Bayesian Independent Samples T-Test</b>
+            <b v-else-if="method=='BayesPairedSamplesT-Test'">Bayesian Paired Samples T-Test</b>
+            <b v-else-if="method=='BayesOneSampleT-Test'">Bayesian One Sample T-Test</b>
         </div>
 
         <!-- 独立样本T检验的界面 -->
@@ -22,27 +22,27 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectDenpendent" class="select-btn-div" title="选择为分组变量">
+                <div @click="selectDenpendent" class="select-btn-div" title="select group">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
-                <div @click="selectCovariate" class="select-btn-div" style="margin-top:60px;" title="选择为变量">
+                <div @click="selectCovariate" class="select-btn-div" style="margin-top:60px;" title="select variable">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>分组变量(Grouping Variable)</div>
+                    <div>Grouping Variable</div>
                     <div id="Depent-Var-div">
-                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="点击移除">
+                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="remove">
                             {{dependent_variable.head}}
                         </div>
                     </div>
                 </div>
                 <div style="margin-top:30px;">
-                    <div>变量(Variables)</div>
+                    <div>Variables</div>
                     <div id="Covar-div">
-                        <div v-if="covariates.length>0" @click="deleteCovar(item)" class="depent-var" v-for="item in covariates" :key="item.head" title="点击移除">
+                        <div v-if="covariates.length>0" @click="deleteCovar(item)" class="depent-var" v-for="item in covariates" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -60,16 +60,16 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectVariable" class="select-btn-div" title="选择为变量">
+                <div @click="selectVariable" class="select-btn-div" title="select Variable">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>变量(Variables)(按序两两配对)</div>
+                    <div>Variables(Pair in order)</div>
                     <div id="Variable-div">
-                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="点击移除">
+                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -87,22 +87,22 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectVariable" class="select-btn-div" style="margin-top:90px;" title="选择为变量">
+                <div @click="selectVariable" class="select-btn-div" style="margin-top:90px;" title="select Variable">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>测试值(test value)</div>
+                    <div>Test value</div>
                     <div>
                         <input id="test_value" type="number" style="width:100%;border:none;padding:4px;border-radius:4px;" value="0">
                     </div>
                 </div>
                 <div style="margin-top:20px;">
-                    <div>变量(Variables)</div>
+                    <div>Variables</div>
                     <div id="Variable-div" style="height:210px;">
-                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="点击移除">
+                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -120,27 +120,27 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectDenpendent" class="select-btn-div" title="选择为分组变量">
+                <div @click="selectDenpendent" class="select-btn-div" title="select grouping">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
-                <div @click="selectCovariate" class="select-btn-div" style="margin-top:60px;" title="选择为变量">
+                <div @click="selectCovariate" class="select-btn-div" style="margin-top:60px;" title="select variable">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>分组变量(Grouping Variable)</div>
+                    <div>Grouping Variable</div>
                     <div id="Depent-Var-div">
-                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="点击移除">
+                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="remove">
                             {{dependent_variable.head}}
                         </div>
                     </div>
                 </div>
                 <div style="margin-top:15px;">
-                    <div>变量(Variables)</div>
+                    <div>Variables</div>
                     <div id="Covar-div" style="height:150px;">
-                        <div v-if="covariates.length>0" @click="deleteCovar(item)" class="depent-var" v-for="item in covariates" :key="item.head" title="点击移除">
+                        <div v-if="covariates.length>0" @click="deleteCovar(item)" class="depent-var" v-for="item in covariates" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -168,16 +168,16 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectVariable" class="select-btn-div" title="选择为变量">
+                <div @click="selectVariable" class="select-btn-div" title="select Variable">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>变量(Variables)(按序两两配对)</div>
+                    <div>Variables(Pair in order)</div>
                     <div id="Variable-div" style="height:200px;">
-                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="点击移除">
+                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -205,22 +205,22 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectVariable" class="select-btn-div" style="margin-top:90px;" title="选择为变量">
+                <div @click="selectVariable" class="select-btn-div" style="margin-top:90px;" title="select Variable">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>测试值(test value)</div>
+                    <div>Test value</div>
                     <div>
                         <input id="test_value" type="number" style="width:100%;border:none;padding:4px;border-radius:4px;" value="0">
                     </div>
                 </div>
                 <div style="margin-top:10px;">
-                    <div>变量(Variables)</div>
+                    <div>Variables</div>
                     <div id="Variable-div" style="height:160px;">
-                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="点击移除">
+                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -293,7 +293,7 @@
         </div>
     </div>
     <!-- 消息框 -->
-    <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
+    <MyModal v-if="showModal==true" :show="showModal" title="Processing data"></MyModal>
 </div>
 </template>
 
@@ -350,13 +350,13 @@ export default {
                 //检查变量的数据是否都是数字
                 for (var i = 0; i < this.variables.length; i++) {
                     if (this.check_List_isAllNum(this.variables[i].data) == false) {
-                        alert("变量"+this.variables[i].head+"中数据存在非数字，请检查！");
+                        alert("The data in the variable:"+this.variables[i].head+" is non-numeric, please check！");
                         return;
                     }
                 }
                 var test_value=$("#test_value").val();
                 if (test_value==""||parseFloat(test_value).toString() == "NaN"){
-                    alert("test value 不是数字，请检查！");
+                    alert("Test value is not number,please check！");
                     return;
                 }
                 //
@@ -379,25 +379,25 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //贝叶斯独立样本T检验
         bayesIndependentSamplesT() {
             if (this.dependent_variable != null && this.covariates.length > 0) {
                 //检查因变量和协变量的数据是否都是数字，并且检查数据个数是否一致
                 if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
-                    alert("分组变量的数据存在非数字，请检查！");
+                    alert("The data of the grouping variable is non-numeric, please check！");
                     return;
                 }
                 for (var i = 0; i < this.covariates.length; i++) {
                         if (this.check_List_isAllNum(this.covariates[i].data) == false) {
-                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            alert("The data in the variable:"+this.covariates[i].head+" is non-numeric, please check！");
                             return;
                         }
                 }
@@ -430,38 +430,38 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //贝叶斯配对样本T检验
         bayesPairedSamplesT() {
             if (this.variables.length > 0) {
                 if(this.variables.length%2!=0){
-                    alert("选择了奇数个变量，无法按序完成两两配对，请检查！");
+                    alert("An odd number of variables has been selected and pairing cannot be completed in sequence, please check!");
                     return;
                 }
                 //检查两两配对的变量的数据是否都是数字，并且检查数据个数是否一致
                 for (var i = 0; i < this.variables.length; i+=2) {
                     if (this.variables[i].data.length!=this.variables[i+1].data.length) {
                         var index=(i/2.0)+1;
-                        alert("第"+index+"对变量的数据个数不一致，请检查！");
+                        alert("The number of data of the "+index+" pair of variables is inconsistent, please check!");
                         return;
                     } 
                     if (this.check_List_isAllNum(this.variables[i].data) == false) {
-                        alert("变量"+this.variables[i].head+"中数据存在非数字，请检查！");
+                        alert("The data in the variable:"+this.variables[i].head+" is non-numeric, please check！");
                         return;
                     }
                     if (this.check_List_isAllNum(this.variables[i+1].data) == false) {
-                        alert("变量"+this.variables[i+1].head+"中数据存在非数字，请检查！");
+                        alert("The data in the variable:"+this.variables[i+1].head+" is non-numeric, please check！");
                         return;
                     }
                     if(this.variables[i].head==this.variables[i+1].head){
-                        alert("变量"+this.variables[i].head+"不能与自身进行配对，请检查！");
+                        alert("Variable:"+this.variables[i].head+" cannot be paired with itself, please check!");
                         return;
                     }
                 }
@@ -485,13 +485,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //单样本T检验
         oneSamplesT() {
@@ -501,13 +501,13 @@ export default {
                 //检查变量的数据是否都是数字
                 for (var i = 0; i < this.variables.length; i++) {
                     if (this.check_List_isAllNum(this.variables[i].data) == false) {
-                        alert("变量"+this.variables[i].head+"中数据存在非数字，请检查！");
+                        alert("The data in the variable:"+this.variables[i].head+" is non-numeric, please check！");
                         return;
                     }
                 }
                 var test_value=$("#test_value").val();
                 if (parseFloat(test_value).toString() == "NaN"){
-                    alert("test value 不是数字，请检查！");
+                    alert("test value is not number,please check!");
                     return;
                 }
                 //
@@ -529,13 +529,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //配对样本T检验
         pairedSamplesT() {
@@ -543,26 +543,26 @@ export default {
             if (this.variables.length > 0) {
                 console.log("Paired Samples T-Test");
                 if(this.variables.length%2!=0){
-                    alert("选择了奇数个变量，无法按序完成两两配对，请检查！");
+                    alert("An odd number of variables has been selected and pairing cannot be completed in sequence, please check!");
                     return;
                 }
                 //检查两两配对的变量的数据是否都是数字，并且检查数据个数是否一致
                 for (var i = 0; i < this.variables.length; i+=2) {
                     if (this.variables[i].data.length!=this.variables[i+1].data.length) {
                         var index=(i/2.0)+1;
-                        alert("第"+index+"对变量的数据个数不一致，请检查！");
+                        alert("The number of data of the "+index+" pair of variables is inconsistent, please check!");
                         return;
                     } 
                     if (this.check_List_isAllNum(this.variables[i].data) == false) {
-                        alert("变量"+this.variables[i].head+"中数据存在非数字，请检查！");
+                        alert("The data in the variable:"+this.variables[i].head+" is non-numeric, please check！");
                         return;
                     }
                     if (this.check_List_isAllNum(this.variables[i+1].data) == false) {
-                        alert("变量"+this.variables[i+1].head+"中数据存在非数字，请检查！");
+                        alert("The data in the variable:"+this.variables[i+1].head+" is non-numeric, please check！");
                         return;
                     }
                     if(this.variables[i].head==this.variables[i+1].head){
-                        alert("变量"+this.variables[i].head+"不能与自身进行配对，请检查！");
+                        alert("Variable:"+this.variables[i].head+" cannot be paired with itself, please check!");
                         return;
                     }
                 }
@@ -585,13 +585,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //独立样本T检验
         independentSamplesT() {
@@ -600,12 +600,12 @@ export default {
                 console.log("IndependentSamplesT-Test");
                 //检查因变量和协变量的数据是否都是数字，并且检查数据个数是否一致
                 if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
-                    alert("分组变量的数据存在非数字，请检查！");
+                    alert("The data of the grouping variable is non-numeric, please check!");
                     return;
                 }
                 for (var i = 0; i < this.covariates.length; i++) {
                         if (this.check_List_isAllNum(this.covariates[i].data) == false) {
-                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            alert("The data in the variable:"+this.covariates[i].head+" is non-numeric, please check！");
                             return;
                         }
                 }
@@ -637,13 +637,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         
         //选择该项为变量 variales

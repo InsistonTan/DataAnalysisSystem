@@ -1,7 +1,7 @@
 <template>
 <div>
-    <canvas id="codecanvas" class="codecanvas" v-bind:height="height" v-bind:width="width" v-on:click="creatCode"></canvas>
-    <a href="#" v-on:click="creatCode" style="margin-left: 10px;font-size: 13px;text-decoration:none;" class="font_shadow">看不清？换一个！</a>
+    <canvas id="codecanvas" class="codecanvas" v-bind:height="height" v-bind:width="width" v-on:click="creatCode" title="change one"></canvas>
+    <a href="#" v-on:click="creatCode" style="margin-left: 10px;font-size: 13px;text-decoration:none;" class="font_shadow">change one</a>
 </div>
 </template>
 
@@ -73,5 +73,8 @@ export default {
     margin-top: 10px;
     border-radius: 4px;
     /* margin-left: -50px; */
+}
+.codecanvas:hover{
+    cursor: pointer;
 }
 </style>

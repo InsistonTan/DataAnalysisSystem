@@ -96,11 +96,11 @@
         </div>
         <!-- 相关性的结果展示 -->
         <div v-else-if="method=='Correlation'">
-            <div><b>相关系数可视化:</b></div>
-            <div><img :src="result['covPic']" alt="相关系数图"></div>
+            <div><b>Visualization of correlation coefficient:</b></div>
+            <div><img :src="result['covPic']" alt="correlation coefficient"></div>
             <div v-if="name!='statu'&&name!='covPic'" v-for="(value,name) in result">
-                <b v-if="name=='cov'">协方差&nbsp;Covariance:</b>
-                <b v-else>{{name}}&nbsp;相关系数:</b>
+                <b v-if="name=='cov'">Covariance:</b>
+                <b v-else>{{name}}&nbsp;correlation coefficient:</b>
                 <table class="table table-striped" style="background:rgb(235,235,235);">
                     <tr>
                         <td></td>
@@ -226,12 +226,12 @@
                 <tr>
                     <td></td>
                     <!-- <td>vars</td> -->
-                    <td>数据个数(n)</td>
-                    <td>均值(mean)</td>
-                    <td>中位数(median)</td>
+                    <td>n</td>
+                    <td>mean</td>
+                    <td>median</td>
                     <td>min</td>
                     <td>max</td>
-                    <td>标准差(sd)</td>
+                    <td>Standard deviation(sd)</td>
                 </tr>
                 <tr v-for="(value,key) in result['baseDescriptives']">
                     <td><b>{{key}}</b></td>
@@ -247,11 +247,11 @@
             <table class="table table-striped" style="background:rgb(235,235,235);">
                 <tr>
                     <td></td>
-                    <td>截尾均值(trimmed)</td>
-                    <td>绝对中位差(mad)</td>
-                    <td>值域(range)</td>
-                    <td>偏度(skew)</td>
-                    <td>峰度(kurtosis)</td>
+                    <td>trimmed</td>
+                    <td>mad</td>
+                    <td>range</td>
+                    <td>skew</td>
+                    <td>kurtosis</td>
                 </tr>
                 <tr v-for="(value,key) in result['baseDescriptives']">
                     <td><b>{{key}}</b></td>
@@ -262,9 +262,9 @@
                     <td>{{value['kurtosis']}}</td>
                 </tr>
             </table>
-            <div><b>直方图-密度曲线:</b></div>
+            <div><b>Histogram-density curve:</b></div>
             <div v-for="url in result['pics']">
-                <img :src="url" alt="直方图">
+                <img :src="url" alt="Histogram-density curve">
             </div>
         </div>
         <!-- 可靠性分析的结果展示 -->
@@ -372,7 +372,7 @@
             <table class="table table-striped" style="background:rgb(235,235,235);">
                 <tr>
                     <td></td>
-                    <td>95%置信区间(95% confidence interval)</td>
+                    <td>95% confidence interval</td>
                 </tr>
                 <tr v-if="key!='statu'" v-for="(value,key) in result">
                     <td>{{key}}</td>
@@ -400,7 +400,7 @@
             <table class="table table-striped" style="background:rgb(235,235,235);">
                 <tr>
                     <td></td>
-                    <td>95%置信区间(95% confidence interval)</td>
+                    <td>95% confidence interval</td>
                 </tr>
                 <tr v-if="key!='statu'" v-for="(value,key) in result">
                     <td>{{key}}</td>
@@ -428,7 +428,7 @@
             <table class="table table-striped" style="background:rgb(235,235,235);">
                 <tr>
                     <td></td>
-                    <td>95%置信区间(95% confidence interval)</td>
+                    <td>95% confidence interval</td>
                 </tr>
                 <tr v-if="key!='statu'" v-for="(value,key) in result">
                     <td>{{key}}</td>
@@ -492,10 +492,10 @@
                 <tr>
                     <td></td>
                     <td>Df</td>
-                    <td>总方差和(Sum Sq)</td>
-                    <td>平均方差和(Mean Sq)</td>
-                    <td>F统计量(F value)</td>
-                    <td>P值(Pr(>F))</td>
+                    <td>Sum Sq</td>
+                    <td>Mean Sq</td>
+                    <td>F value</td>
+                    <td>Pr(>F)</td>
                 </tr>
                 <tr v-for="(value,key) in result['anova']">
                     <td>{{key}}</td>
@@ -514,10 +514,10 @@
                 <tr>
                     <td></td>
                     <td>Df</td>
-                    <td>总方差和(Sum Sq)</td>
-                    <td>平均方差和(Mean Sq)</td>
-                    <td>F统计量(F value)</td>
-                    <td>P值(Pr(>F))</td>
+                    <td>Sum Sq</td>
+                    <td>Mean Sq</td>
+                    <td>F value</td>
+                    <td>Pr(>F)</td>
                 </tr>
                 <tr v-for="(value,key) in result['ancova']">
                     <td>{{key}}</td>
@@ -557,9 +557,11 @@
         <!-- 二项检验的结果 -->
         <div v-else-if="method=='BinomialTest'">
             <div v-if="key!='statu'" v-for="(value,key) in result">
-                <div><b>变量<span style="color:green;">{{key}}</span>的结果
-                    (variable <span style="color:green;">{{key}}</span> result):
-                </b></div>
+                <div>
+                    <b>
+                    Variable <span style="color:green;">{{key}}</span> result:
+                    </b>
+                </div>
                 <table class="table table-striped" style="background:rgb(235,235,235);">
                     <tr>
                         <td>Level</td>
@@ -567,7 +569,7 @@
                         <td>Total</td>
                         <td>Proportion</td>
                         <td>P-value</td>
-                        <td>95%置信区间</td>
+                        <td>95% confidence interval</td>
                     </tr>
                     <tr v-for="(data,name) in value">
                         <td>{{name}}</td>
@@ -589,10 +591,10 @@
                     <tr>
                         <td></td>
                         <td>Df</td>
-                        <td>总方差和(Sum Sq)</td>
-                        <td>平均方差和(Mean Sq)</td>
-                        <td>F统计量(F value)</td>
-                        <td>P值(Pr(>F))</td>
+                        <td>Sum Sq</td>
+                        <td>Mean Sq</td>
+                        <td>F value</td>
+                        <td>Pr(>F)</td>
                     </tr>
                     <tr v-for="(value,key) in result['anova']">
                         <td>{{key}}</td>
@@ -712,8 +714,8 @@
         <!-- ----------------------------------------------------------------------------------------------------- -->
         <!-- 主成分分析的结果 -->
         <div v-else-if="method=='PrincipalComponentAnalysis'">
-            <div><b>平行分析碎石图:</b></div>
-            <div><img :src="result['parallelPic']" alt="平行分析碎石图"></div>
+            <div><b>Parallel analysis of gravel:</b></div>
+            <div><img :src="result['parallelPic']" alt="Parallel analysis of gravel"></div>
             <div><b>Importance of components:</b></div>
             <table class="table table-striped" style="background:rgb(235,235,235);">
                 <tr>
@@ -723,19 +725,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>标准差(Standard deviation)</td>
+                    <td>Standard deviation</td>
                     <td v-for="value in result['importance']['sdev']">
                         {{value}}
                     </td>
                 </tr>
                 <tr>
-                    <td>方差贡献率(Proportion of Variance)</td>
+                    <td>Proportion of Variance</td>
                     <td v-for="value in result['importance']['pov']">
                         {{value}}
                     </td>
                 </tr>
                 <tr>
-                    <td>累计方差贡献率(Cumulative Proportion)</td>
+                    <td>Cumulative Proportion</td>
                     <td v-for="value in result['importance']['cp']">
                         {{value}}
                     </td>
@@ -755,8 +757,8 @@
         </div>
         <!-- 探索性因子分析的结果 -->
         <div v-else-if="method=='ExploratoryFactorAnalysis'">
-            <div><b>平行分析碎石图:</b></div>
-            <div><img :src="result['parallelPic']" alt="平行分析碎石图"></div>
+            <div><b>Parallel analysis of gravel:</b></div>
+            <div><img :src="result['parallelPic']" alt="Parallel analysis of gravel"></div>
             <div><b>Loadings:</b></div>
             <table class="table table-striped" style="background:rgb(235,235,235);">
                 <tr>

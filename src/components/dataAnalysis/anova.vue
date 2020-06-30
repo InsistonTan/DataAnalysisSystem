@@ -4,9 +4,9 @@
     <div id="main-left-div">
         <!-- title -->
         <div style="padding-bottom: 20px;">
-            <b v-if="method=='ANOVA'">方差分析(ANOVA)</b>
-            <b v-else-if="method=='ANCOVA'">协方差分析(ANCOVA)</b>
-            <b v-else-if="method=='MANOVA'">多变量方差分析(MANOVA)</b>
+            <b v-if="method=='ANOVA'">ANOVA</b>
+            <b v-else-if="method=='ANCOVA'">ANCOVA</b>
+            <b v-else-if="method=='MANOVA'">MANOVA</b>
         </div>
 
         <!-- 方差分析ANOVA的界面 -->
@@ -19,25 +19,25 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectDenpendent" class="select-btn-div" title="选择为因变量">
+                <div @click="selectDenpendent" class="select-btn-div" title="select dependent">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
-                <div @click="selectCovariate" class="select-btn-div" style="margin-top:60px;" title="选择为固定因子">
+                <div @click="selectCovariate" class="select-btn-div" style="margin-top:60px;" title="select factor">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>因变量(Dependent Variable)</div>
+                    <div>Dependent Variable</div>
                     <div id="Depent-Var-div">
-                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="点击移除">
+                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="Click to remove">
                             {{dependent_variable.head}}
                         </div>
                     </div>
                 </div>
                 <div style="margin-top:30px;">
-                    <div>固定因子(Fixed Factors)</div>
+                    <div>Fixed Factors</div>
                     <div id="Covar-div">
                         <div v-if="covariates.length>0" @click="deleteCovar(item)" class="depent-var" v-for="item in covariates" :key="item.head" title="点击移除">
                             {{item.head}}
@@ -57,38 +57,38 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectDenpendent" class="select-btn-div" title="选择为因变量">
+                <div @click="selectDenpendent" class="select-btn-div" >
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
-                <div @click="selectFactor" class="select-btn-div" style="margin-top:50px;" title="选择为固定因子">
+                <div @click="selectFactor" class="select-btn-div" style="margin-top:50px;" >
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
-                <div @click="selectCovariate" class="select-btn-div" style="margin-top:95px;" title="选择为协变量">
+                <div @click="selectCovariate" class="select-btn-div" style="margin-top:95px;" title="select covariate">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>因变量(Dependent Variable)</div>
+                    <div>Dependent Variable</div>
                     <div id="Depent-Var-div">
-                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="点击移除">
+                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="remove">
                             {{dependent_variable.head}}
                         </div>
                     </div>
                 </div>
                 <div style="margin-top:4px;">
-                    <div>固定因子(Fixed Factors)</div>
+                    <div>Fixed Factors</div>
                     <div id="Factor-div">
-                        <div v-if="factors.length>0" @click="deleteFactor(item)" class="depent-var" v-for="item in factors" :key="item.head" title="点击移除">
+                        <div v-if="factors.length>0" @click="deleteFactor(item)" class="depent-var" v-for="item in factors" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
                 </div>
                 <div style="margin-top:4px;">
-                    <div>协变量(Covariates)</div>
+                    <div>Covariates</div>
                     <div id="Covar-div" style="height:100px;">
-                        <div v-if="covariates.length>0" @click="deleteCovar(item)" class="depent-var" v-for="item in covariates" :key="item.head" title="点击移除">
+                        <div v-if="covariates.length>0" @click="deleteCovar(item)" class="depent-var" v-for="item in covariates" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -107,27 +107,27 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectDependents" class="select-btn-div" title="选择为因变量">
+                <div @click="selectDependents" class="select-btn-div" title="select dependents">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
-                <div @click="selectFactor" class="select-btn-div" style="margin-top:130px;" title="选择为固定因子">
+                <div @click="selectFactor" class="select-btn-div" style="margin-top:130px;" title="select Factor">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>因变量(Dependent Variables)</div>
+                    <div>Dependent Variables</div>
                     <div id="dependents-div" style="height:120px;">
-                        <div v-if="dependents.length>0" @click="deleteDependents(item)" class="depent-var" v-for="item in dependents" :key="item.head" title="点击移除">
+                        <div v-if="dependents.length>0" @click="deleteDependents(item)" class="depent-var" v-for="item in dependents" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
                 </div>
                 <div style="margin-top:10px;">
-                    <div>固定因子(Fixed Factors)</div>
+                    <div>Fixed Factors</div>
                     <div id="Factor-div" style="height:130px;">
-                        <div v-if="factors.length>0" @click="deleteFactor(item)" class="depent-var" v-for="item in factors" :key="item.head" title="点击移除">
+                        <div v-if="factors.length>0" @click="deleteFactor(item)" class="depent-var" v-for="item in factors" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -169,7 +169,7 @@
         </div>
     </div>
     <!-- 消息框 -->
-    <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
+    <MyModal v-if="showModal==true" :show="showModal" title="Processing data"></MyModal>
 </div>
 </template>
 
@@ -219,7 +219,7 @@ export default {
             if (this.dependents.length>0&&this.factors.length>0) {
                 console.log("MANOVA");
                 if(this.dependents.length<2){
-                    alert("因变量个数不能小于2个，请检查！");
+                    alert("The number of dependent variables cannot be less than 2, please check！");
                     return;
                 }
                 //检查因变量、固定因子、协变量的数据是否都是数字，并且检查数据个数是否一致
@@ -227,22 +227,22 @@ export default {
                 //检查因变量
                 for (var i = 0; i < this.dependents.length; i++) {
                         if(this.dependents[i].data.length!=len){
-                            alert("存在因变量的数据长度不一致，请检查！");
+                            alert("The data length of the dependent variable is inconsistent, please check！");
                             return;
                         }
                         if (this.check_List_isAllNum(this.dependents[i].data) == false) {
-                            alert("变量"+this.dependents[i].head+"中数据存在非数字，请检查！");
+                            alert("The data in the variable:"+this.dependents[i].head+" is non-numeric, please check！");
                             return;
                         }
                 }
                 //检查固定因子
                 for (var i = 0; i < this.factors.length; i++) {
                         if(this.factors[i].data.length!=len){
-                            alert("存在固定因子的数据长度与因变量的数据长度不一致，请检查！");
+                            alert("The data length of the fixed factor is not consistent with the data length of the dependent variable, please check！");
                             return;
                         }
                         if (this.check_List_isAllNum(this.factors[i].data) == false) {
-                            alert("变量"+this.factors[i].head+"中数据存在非数字，请检查！");
+                            alert("The data in the variable:"+this.factors[i].head+"is non-numeric, please check！");
                             return;
                         }
                 }
@@ -277,13 +277,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //协方差分析ancova
         ancova() {
@@ -291,33 +291,33 @@ export default {
             if (this.dependent_variable != null) {
                 console.log("ANCOVA");
                 if(this.factors.length<1&&this.covariates.length<1){
-                    alert("固定因子和协变量不能同时为空，请检查！");
+                    alert("Fixed factor and covariate cannot be empty at the same time, please check！");
                     return;
                 }
                 //检查因变量、固定因子、协变量的数据是否都是数字，并且检查数据个数是否一致
                 if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
-                    alert("因变量的数据存在非数字，请检查！");
+                    alert("The data of the dependent variable is non-numeric, please check！");
                     return;
                 }
                 //检查固定因子
                 for (var i = 0; i < this.factors.length; i++) {
                         if(this.factors[i].data.length!=this.dependent_variable.data.length){
-                            alert("存在固定因子的数据长度与因变量的数据长度不一致，请检查！");
+                            alert("The data length of the fixed factor is not consistent with the data length of the dependent variable, please check！");
                             return;
                         }
                         if (this.check_List_isAllNum(this.factors[i].data) == false) {
-                            alert("变量"+this.factors[i].head+"中数据存在非数字，请检查！");
+                            alert("The data in the variable:"+this.factors[i].head+"is non-numeric, please check！");
                             return;
                         }
                 }
                 //检查协变量
                 for (var i = 0; i < this.covariates.length; i++) {
                         if(this.covariates[i].data.length!=this.dependent_variable.data.length){
-                            alert("存在协变量的数据长度与因变量的数据长度不一致，请检查！");
+                            alert("The data length of the covariate is not consistent with the data length of the dependent variable, please check！");
                             return;
                         }
                         if (this.check_List_isAllNum(this.covariates[i].data) == false) {
-                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            alert("The data in the variable:"+this.covariates[i].head+"is non-numeric, please check！");
                             return;
                         }
                 }
@@ -354,13 +354,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //方差分析anova
         anova() {
@@ -369,16 +369,16 @@ export default {
                 console.log("ANOVA");
                 //检查因变量和固定因子的数据是否都是数字，并且检查数据个数是否一致
                 if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
-                    alert("因变量的数据存在非数字，请检查！");
+                    alert("The data of the dependent variable is non-numeric, please check!");
                     return;
                 }
                 for (var i = 0; i < this.covariates.length; i++) {
                         if(this.covariates[i].data.length!=this.dependent_variable.data.length){
-                            alert("存在固定因子的数据长度与因变量的数据长度不一致，请检查！");
+                            alert("The data length of the fixed factor is not consistent with the data length of the dependent variable, please check！");
                             return;
                         }
                         if (this.check_List_isAllNum(this.covariates[i].data) == false) {
-                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            alert("The data in the variable:"+this.covariates[i].head+"is non-numeric, please check！");
                             return;
                         }
                 }
@@ -410,13 +410,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //选择该项为因变量（多个）
         selectDependents() {

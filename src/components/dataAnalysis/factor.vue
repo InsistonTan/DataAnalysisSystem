@@ -4,9 +4,9 @@
     <div id="main-left-div">
         <!-- title -->
         <div style="padding-bottom: 20px;">
-            <b v-if="method=='PrincipalComponentAnalysis'">主成分分析(Principal Component Analysis)</b>
-            <b v-else-if="method=='ExploratoryFactorAnalysis'">探索性因子分析(Exploratory Factor Analysis)</b>
-            <b v-else-if="method=='ConfirmatoryFactorAnalysis'">验证性因子分析(Confirmatory Factor Analysis)</b>
+            <b v-if="method=='PrincipalComponentAnalysis'">Principal Component Analysis</b>
+            <b v-else-if="method=='ExploratoryFactorAnalysis'">Exploratory Factor Analysis</b>
+            <b v-else-if="method=='ConfirmatoryFactorAnalysis'">Confirmatory Factor Analysis</b>
         </div>
 
         <!-- 主成分分析的界面 -->
@@ -19,16 +19,16 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectVariable" class="select-btn-div" title="选择为变量">
+                <div @click="selectVariable" class="select-btn-div" title="select Variable">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>变量(Variables)</div>
+                    <div>Variables</div>
                     <div id="Variable-div">
-                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="点击移除">
+                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -45,22 +45,22 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectVariable" class="select-btn-div" style="margin-top:90px;" title="选择为变量">
+                <div @click="selectVariable" class="select-btn-div" style="margin-top:90px;" title="select Variable">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>提取的因子数(nfactors)</div>
+                    <div>nfactors</div>
                     <div>
                         <input id="nfactors" type="number" style="width:100%;border:none;padding:4px;border-radius:4px;" value="1">
                     </div>
                 </div>
                 <div style="margin-top:20px;">
-                    <div>变量(Variables)</div>
+                    <div>Variables</div>
                     <div id="Variable-div" style="height:210px;">
-                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="点击移除">
+                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -95,7 +95,7 @@
         </div>
     </div>
     <!-- 消息框 -->
-    <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
+    <MyModal v-if="showModal==true" :show="showModal" title="Processing data"></MyModal>
 </div>
 </template>
 
@@ -145,11 +145,11 @@ export default {
                 console.log("ExploratoryFactorAnalysis");
                 //检查提取的因子数是否合法
                 if (parseFloat(nfactors).toString() == "NaN"){
-                    alert("提取的因字数存在非数字，请检查！");
+                    alert("nfactors are non-numeric, please check！");
                     return;
                 }
                 else if(nfactors>=this.variables.length-1){
-                    alert("提取的因字数应该小于"+(this.variables.length-1)+"，请检查！");
+                    alert("nfactors should be less than "+(this.variables.length-1)+"，please check！");
                     return;
                 }
                 
@@ -157,11 +157,11 @@ export default {
                 var len=this.variables[0].data.length;
                 for (var i = 0; i < this.variables.length; i++) {
                     if (this.variables[i].data.length!=len) {
-                        alert("已选择的变量的数据个数不一致，请检查！");
+                        alert("The number of data of the selected variable is inconsistent, please check！");
                         return;
                     } 
                     if (this.check_List_isAllNum(this.variables[i].data) == false) {
-                        alert("变量"+this.variables[i].head+"中数据存在非数字，请检查！");
+                        alert("The data in the variable:"+this.variables[i].head+" is non-numeric, please check！");
                         return;
                     }
                 }
@@ -184,13 +184,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //主成分分析
         principalComponentAnalysis(){
@@ -201,11 +201,11 @@ export default {
                 var len=this.variables[0].data.length;
                 for (var i = 0; i < this.variables.length; i++) {
                     if (this.variables[i].data.length!=len) {
-                        alert("已选择的变量的数据个数不一致，请检查！");
+                        alert("The number of data of the selected variable is inconsistent, please check！");
                         return;
                     } 
                     if (this.check_List_isAllNum(this.variables[i].data) == false) {
-                        alert("变量"+this.variables[i].head+"中数据存在非数字，请检查！");
+                        alert("The data in the variable:"+this.variables[i].head+" is non-numeric, please check！");
                         return;
                     }
                 }
@@ -227,13 +227,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
 
         //选择该项为factor

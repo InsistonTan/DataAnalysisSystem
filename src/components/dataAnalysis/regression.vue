@@ -4,12 +4,12 @@
     <div id="main-left-div">
         <!-- title -->
         <div style="padding-bottom: 20px;">
-            <b v-if="method=='LinearRegression'">线性回归(linear Regression)</b>
-            <b v-else-if="method=='LogisticRegression'">逻辑回归(logistic Regression)</b>
-            <b v-else-if="method=='PoissonRegression'">泊松回归(Poisson Regression)</b>
-            <b v-else-if="method=='Correlation'">相关性分析(Correlation)</b>
-            <b v-else-if="method=='BayesCorrelation'">贝叶斯相关性(Bayesian Correlation)</b>
-            <b v-else-if="method=='BayesLinearRegression'">贝叶斯线性回归(Bayesian Linear Regression)</b>
+            <b v-if="method=='LinearRegression'">Linear Regression</b>
+            <b v-else-if="method=='LogisticRegression'">Logistic Regression</b>
+            <b v-else-if="method=='PoissonRegression'">Poisson Regression</b>
+            <b v-else-if="method=='Correlation'">Correlation</b>
+            <b v-else-if="method=='BayesCorrelation'">Bayesian Correlation</b>
+            <b v-else-if="method=='BayesLinearRegression'">Bayesian Linear Regression</b>
         </div>
 
         <!-- 线性回归和逻辑回归的界面 -->
@@ -22,27 +22,27 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectDenpendent" class="select-btn-div" title="选择为因变量">
+                <div @click="selectDenpendent" class="select-btn-div" title="select Denpendent">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
-                <div @click="selectCovariate" class="select-btn-div" style="margin-top:60px;" title="选择为协变量">
+                <div @click="selectCovariate" class="select-btn-div" style="margin-top:60px;" title="select Covariate">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>因变量(Dependent Variable)</div>
+                    <div>Dependent Variable</div>
                     <div id="Depent-Var-div">
-                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="点击移除">
+                        <div v-if="dependent_variable!=null" @click="deleteDepent" class="depent-var" title="remove">
                             {{dependent_variable.head}}
                         </div>
                     </div>
                 </div>
                 <div style="margin-top:30px;">
-                    <div>协变量(Covariates)</div>
+                    <div>Covariates</div>
                     <div id="Covar-div">
-                        <div v-if="covariates.length>0" @click="deleteCovar(item)" class="depent-var" v-for="item in covariates" :key="item.head" title="点击移除">
+                        <div v-if="covariates.length>0" @click="deleteCovar(item)" class="depent-var" v-for="item in covariates" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -60,16 +60,16 @@
             </div>
             <!-- 中间的按钮div -->
             <div id="mid-btn">
-                <div @click="selectVariable" class="select-btn-div" title="选择为变量">
+                <div @click="selectVariable" class="select-btn-div" title="select Variable">
                     <img class="btn-img" src="../../assets/select.png" alt="select">
                 </div>
             </div>
             <!-- 右边已经选择的变量div -->
             <div id="show-selected-div">
                 <div>
-                    <div>变量(Variables)</div>
+                    <div>Variables</div>
                     <div id="Variable-div">
-                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="点击移除">
+                        <div v-if="variables.length>0" @click="deleteVariable(item)" class="depent-var" v-for="item in variables" :key="item.head" title="remove">
                             {{item.head}}
                         </div>
                     </div>
@@ -141,7 +141,7 @@
         </div>
     </div>
     <!-- 消息框 -->
-    <MyModal v-if="showModal==true" :show="showModal" title="正在处理数据"></MyModal>
+    <MyModal v-if="showModal==true" :show="showModal" title="Processing data"></MyModal>
 </div>
 </template>
 
@@ -240,17 +240,17 @@ export default {
         //贝叶斯相关性分析
         bayesCorrelation(){
             console.log("confirm to BayesCorrelation");
-            if (this.variables.length > 0) {
+            if (this.variables.length > 1) {
                 console.log("BayesCorrelation");
                 //检查变量的数据是否都是数字，并且检查数据个数是否一致
                 var len=this.variables[0].data.length;
                 for (var i = 0; i < this.variables.length; i++) {
                     if (this.variables[i].data.length!=len) {
-                        alert("已选择的变量的数据个数不一致，请检查！");
+                        alert("The number of data of the selected variable is inconsistent, please check!");
                         return;
                     } 
                     if (this.check_List_isAllNum(this.variables[i].data) == false) {
-                        alert("变量"+this.variables[i].head+"中数据存在非数字，请检查！");
+                        alert("The data in the variable:"+this.variables[i].head+" is non-numeric, please check");
                         return;
                     }
                 }
@@ -272,13 +272,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //贝叶斯线性回归分析
         bayesLinearRegression() {
@@ -287,16 +287,16 @@ export default {
                 console.log("BayesLinearRegression");
                 //检查因变量和协变量的数据是否都是数字，并且检查数据个数是否一致
                 if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
-                    alert("因变量的数据存在非数字，请检查！");
+                    alert("The data of the dependent variable is non-numeric, please check!");
                     return;
                 }
                 for (var i = 0; i < this.covariates.length; i++) {
                     if (this.dependent_variable.data.length != this.covariates[i].data.length) {
-                        alert("已选择的项的数据个数不一致，请检查！");
+                        alert("The number of data of the selected items is inconsistent, please check!");
                         return;
                     } else {
                         if (this.check_List_isAllNum(this.covariates[i].data) == false) {
-                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            alert("The data in the variable:"+this.covariates[i].head+" is non-numeric, please check！");
                             return;
                         }
                     }
@@ -329,28 +329,28 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //相关性分析
         correlation(){
             console.log("confirm to correlation");
-            if (this.variables.length > 0) {
+            if (this.variables.length > 1) {
                 console.log("correlation");
                 //检查变量的数据是否都是数字，并且检查数据个数是否一致
                 var len=this.variables[0].data.length;
                 for (var i = 0; i < this.variables.length; i++) {
                     if (this.variables[i].data.length!=len) {
-                        alert("已选择的变量的数据个数不一致，请检查！");
+                        alert("The number of data of the selected variable is inconsistent, please check!");
                         return;
                     } 
                     if (this.check_List_isAllNum(this.variables[i].data) == false) {
-                        alert("变量"+this.variables[i].head+"中数据存在非数字，请检查！");
+                        alert("The data in the variable:"+this.variables[i].head+" is non-numeric, please check！");
                         return;
                     }
                 }
@@ -372,13 +372,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //线性回归分析
         linearRegression() {
@@ -387,16 +387,16 @@ export default {
                 console.log("linearRegression");
                 //检查因变量和协变量的数据是否都是数字，并且检查数据个数是否一致
                 if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
-                    alert("因变量的数据存在非数字，请检查！");
+                    alert("The data of the dependent variable is non-numeric, please check!！");
                     return;
                 }
                 for (var i = 0; i < this.covariates.length; i++) {
                     if (this.dependent_variable.data.length != this.covariates[i].data.length) {
-                        alert("已选择的项的数据个数不一致，请检查！");
+                        alert("The number of data of the selected items is inconsistent, please check!！");
                         return;
                     } else {
                         if (this.check_List_isAllNum(this.covariates[i].data) == false) {
-                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            alert("The data in the variable:"+this.covariates[i].head+" is non-numeric, please check！");
                             return;
                         }
                     }
@@ -428,13 +428,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //逻辑回归分析
         logisticRegression() {
@@ -443,16 +443,16 @@ export default {
                 console.log("logisticRegression");
                 //检查因变量和协变量的数据是否都是数字，并且检查数据个数是否一致
                 if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
-                    alert("因变量的数据存在非数字，请检查！");
+                    alert("The data of the dependent variable is non-numeric, please check！");
                     return;
                 }
                 for (var i = 0; i < this.covariates.length; i++) {
                     if (this.dependent_variable.data.length != this.covariates[i].data.length) {
-                        alert("已选择的项的数据个数不一致，请检查！");
+                        alert("The number of data of the selected items is inconsistent, please check!");
                         return;
                     } else {
                         if (this.check_List_isAllNum(this.covariates[i].data) == false) {
-                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            alert("The data in the variable:"+this.covariates[i].head+" is non-numeric, please check!");
                             return;
                         }
                     }
@@ -460,7 +460,7 @@ export default {
                 //检查因变量的数据的值,0<=值<=1
                 for(var i=0;i<this.dependent_variable.data.length;i++){
                     if(this.dependent_variable.data[i]<0||this.dependent_variable.data[i]>1){
-                        alert("因变量的数据的值必须在 [0,1] 区间内,请检查！");
+                        alert("The value of the dependent variable data must be in the range [0,1], please check!");
                         return;
                     }
                 }
@@ -491,13 +491,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //泊松回归分析
         poissonRegression() {
@@ -506,16 +506,16 @@ export default {
                 console.log("poissonRegression");
                 //检查因变量和协变量的数据是否都是数字，并且检查数据个数是否一致
                 if (this.check_List_isAllNum(this.dependent_variable.data) == false) {
-                    alert("因变量的数据存在非数字，请检查！");
+                    alert("The data of the dependent variable is non-numeric, please check!");
                     return;
                 }
                 for (var i = 0; i < this.covariates.length; i++) {
                     if (this.dependent_variable.data.length != this.covariates[i].data.length) {
-                        alert("已选择的项的数据个数不一致，请检查！");
+                        alert("The number of data of the selected items is inconsistent, please check!");
                         return;
                     } else {
                         if (this.check_List_isAllNum(this.covariates[i].data) == false) {
-                            alert("变量"+this.covariates[i].head+"中数据存在非数字，请检查！");
+                            alert("The data in the variable："+this.covariates[i].head+" is non-numeric, please check！");
                             return;
                         }
                     }
@@ -548,13 +548,13 @@ export default {
                         this.showModal=false;
                     })
                     .catch(error => {
-                        alert("服务器出现了点小问题...");
+                        alert("server error...");
                         console.log(error);
                         //
                         this.showModal=false;
                     })
 
-            } else alert("参数选择错误,请检查!");
+            } else alert("Parameter selection error, please check!");
         },
         //处理逻辑回归的公式
         getLogisticFormula() {
